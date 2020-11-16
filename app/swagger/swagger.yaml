@@ -1,8 +1,8 @@
 swagger: '2.0'
 info:
-  title: Pet Shop Example API
+  title: Lingo API
   version: "0.1"
-  description: Simple example API to store and retrieve pets
+  description: Simple lingo API to practice your skills
 consumes:
   - application/json
 produces:
