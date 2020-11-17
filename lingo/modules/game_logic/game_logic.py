@@ -1,20 +1,25 @@
 import random
 
-word_length = 0
+some_length = 0
 correct_word = ""
 
 
-def choose_random_word(length):
+def choose_random_word(word_length):
     # TODO: Add logic where you find a random word based on length of current round and language
 
     with open('assets/filtered_dictionaries/NL.txt', 'r') as words:
         something = words.read().splitlines()
-        global correct_word, word_length
+        global correct_word, some_length
         correct_word = random.choice(something).upper()
-        word_length = len(correct_word)
+        some_length = len(correct_word)
+
+    return correct_word + " - aantal letters: " + str(word_length), 200
 
 
 def guess_turn(guess, time):
+    # TODO: Check if word is 0
+
+    # TODO: Maybe make a function that is called validates and that runs all validations
     validate_word_length(guess)
     validate_only_alphabetic(guess)
     validate_time(time)
@@ -44,10 +49,12 @@ def guess_turn(guess, time):
         #     word_response.append(char + " absent")
     return print(word_response)
 
+    # TODO: check if total word is correct if so add a point
+
 
 def validate_word_length(guess):
     # If word is right length
-    if not len(guess) == word_length:
+    if not len(guess) == some_length:
         return print("Word is not the same length")
 
 

@@ -12,10 +12,24 @@ security:
   # (only active if the TOKENINFO_URL environment variable is set)
   - oauth2: [uid]
 paths:
+  /choose/{word_length}:
+    get:
+      tags: [ Word ]
+      operationId: lingo.modules.game_logic.game_logic.choose_random_word
+      summary: Get a random word based on word length
+      parameters:
+        - $ref: '#/parameters/word_length'
+      responses:
+        200:
+          description: Return pet
+          schema:
+            type: string
+        404:
+          description: Can't choose a word
   /pets:
     get:
       tags: [Pets]
-      operationId: app.get_pets
+      operationId: lingo.get_pets
       summary: Get all pets
       parameters:
         - name: animal_type
@@ -41,7 +55,7 @@ paths:
   /pets/{pet_id}:
     get:
       tags: [Pets]
-      operationId: app.get_pet
+      operationId: lingo.get_pet
       summary: Get a single pet
       parameters:
         - $ref: '#/parameters/pet_id'
@@ -54,7 +68,7 @@ paths:
           description: Pet does not exist
     put:
       tags: [Pets]
-      operationId: app.put_pet
+      operationId: lingo.put_pet
       summary: Create or update a pet
       parameters:
         - $ref: '#/parameters/pet_id'
@@ -69,7 +83,7 @@ paths:
           description: New pet created
     delete:
       tags: [Pets]
-      operationId: app.delete_pet
+      operationId: lingo.delete_pet
       summary: Remove a pet
       parameters:
         - $ref: '#/parameters/pet_id'
@@ -88,6 +102,12 @@ parameters:
     type: string
     required: true
     pattern: "^[a-zA-Z0-9-]+$"
+  word_length:
+    name: word_length
+    description: Length the word needs to be
+    in: path
+    type: number
+    required: true
 
 definitions:
   Pet:
