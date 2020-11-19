@@ -18,7 +18,8 @@ paths:
         - alive
       summary: Api keepalive
       description: Api keepalive
-      operationId: lingo.controllers.alive_controller.is_alive
+      operationId: is_alive
+      x-openapi-router-controller: lingo.controllers.alive_controller
       responses:
         "200":
           description: is alive
@@ -38,6 +39,23 @@ paths:
           description: Return a word
         404:
           description: Can't choose a word
+  /game/create:
+    get:
+      operationId: lingo.modules.game_logic.game_logic.create_game
+      summary: Start a game and create a object in memory
+      responses:
+        200:
+          description: Return game id
+  /game/all:
+    get:
+      description: Return all games in memory
+      operationId: lingo.modules.game_logic.game_logic.all_games
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              {}
 
 servers:
   - url: http://0.0.0.0:8080/v1/lingo/api
