@@ -8,6 +8,8 @@ from lingo.modules.game_logic.module.round_type import RoundType
 from lingo.modules.game_logic.module.round_data import GameRound
 from lingo.modules.game_logic.validation import *
 
+calls = {"pipo": "14:34:57"}
+
 games = []
 
 some_length = 0
@@ -67,12 +69,6 @@ def guess_turn(guess, time, word_length):
         else:
             word_response.append(char + " absent")
 
-        # if correct_word[iteration].__eq__(char):
-        #     word_response.append(char + " correct")
-        # elif char in correct_word:
-        #     word_response.append(char + " present")
-        # else:
-        #     word_response.append(char + " absent")
     return print(word_response)
 
     # TODO: check if total word is correct if so add a point
