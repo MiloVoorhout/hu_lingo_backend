@@ -1,12 +1,12 @@
-import json
 import random
 
 from flask import make_response, jsonify
 
-from lingo.modules.game_logic.module.game import Game
-from lingo.modules.game_logic.module.round_type import RoundType
-from lingo.modules.game_logic.module.round_data import GameRound
-from lingo.modules.game_logic.validation import *
+from lingo.game.domain.game import Game
+from lingo.game.domain.round_type import RoundType
+from lingo.game.domain.round_data import GameRound
+from lingo.game.application.validation import *
+from lingo.game.port.data.game_repository import insert_game, insert_round, insert_turn
 
 calls = {"pipo": "14:34:57"}
 
@@ -16,21 +16,23 @@ some_length = 0
 correct_word = ""
 
 
-def create_game():
+def create_game(user_id):
     # TODO: create function that gets the latest game_id
-    game_id = 1
 
     # Basic information for starting a game
-    score = 0
-    game_type = RoundType.FiveCharacters
+    game_type = RoundType.FiveCharacters.value
 
     # Create first round object
-    first_round = GameRound(choose_random_word(game_type.value))
+    random_word = choose_random_word(game_type)
 
-    # Append the game to the internal memory
-    games.append(Game(game_id, score, game_type, first_round))
-
-    return game_id, 200
+    game_id = insert_game(user_id, 'NL', game_type)
+    if game_id is not None:
+        rounds_id = insert_round(game_id, random_word)
+        if rounds_id is not None:
+            if insert_turn(rounds_id):
+                return True
+    else:
+        return False
 
 
 def choose_random_word(word_length):

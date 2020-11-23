@@ -26,7 +26,7 @@ paths:
   /choose/{word_length}:
     get:
       tags: [ Word ]
-      operationId: lingo.modules.game_logic.game_logic.choose_random_word
+      operationId: lingo.game.application.game_logic.choose_random_word
       summary: Get a random word based on word length
       parameters:
         - in: path
@@ -39,23 +39,84 @@ paths:
           description: Return a word
         404:
           description: Can't choose a word
-  /game/create:
-    get:
-      operationId: lingo.modules.game_logic.game_logic.create_game
+  /game/create/{user_id}:
+    post:
+      operationId: lingo.game.application.game_logic.create_game
       summary: Start a game and create a object in memory
-      responses:
-        200:
-          description: Return game id
-  /game/all:
-    get:
-      description: Return all games in memory
-      operationId: lingo.modules.game_logic.game_logic.all_games
+      parameters:
+        - name: user_id
+          description: User unique identifier
+          in: path
+          required: true
+          example: 4
+          schema:
+            type: integer
       responses:
         200:
           description: OK
           content:
             application/json:
               {}
+  /game/all:
+    get:
+      description: Return all games in memory
+      operationId: lingo.game.application.game_logic.all_games
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              {}
+  /user/all:
+    get:
+      description: Return all users
+      operationId: lingo.user.port.http.user_controller.get_users
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              {}
+  /auth/{user_id}:
+    get:
+      summary: Return JWT token
+      operationId: lingo.auth.auth.generate_token
+      parameters:
+        - name: user_id
+          description: User unique identifier
+          in: path
+          required: true
+          example: 12
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: JWT token
+          content:
+            'text/plain':
+              schema:
+                type: string
+  /secret:
+    get:
+      summary: Return secret string
+      operationId: lingo.auth.auth.get_secret
+      responses:
+        '200':
+          description: secret response
+          content:
+            'text/plain':
+              schema:
+                type: string
+      security:
+        - jwt: [ 'secret' ]
+
+components:
+  securitySchemes:
+    jwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: lingo.auth.auth.decode_token
 
 servers:
   - url: http://0.0.0.0:8080/v1/lingo/api
