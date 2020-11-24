@@ -57,6 +57,32 @@ paths:
           content:
             application/json:
               {}
+  /game/turn:
+    post:
+      operationId: guess_word
+      x-openapi-router-controller: lingo.game.port.http.game_controller
+      summary: Make a guess of the correct word
+      parameters:
+        - name: user_id
+          in: query
+          description: User unique identifier
+          required: true
+          example: 7
+          schema:
+            type: integer
+        - name: guessed_word
+          in: query
+          description: Users guessed word
+          required: true
+          example: 'HELLO'
+          schema:
+              type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              {}
   /game/all:
     get:
       description: Return all games in memory

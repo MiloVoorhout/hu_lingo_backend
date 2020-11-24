@@ -7,6 +7,5 @@ def create_library():
 
             if 5 <= len(word) <= 7 and word.isalpha():
                 myfile.write(word + "\n")
-                print(str(len(word)) + " " + word)
 
         myfile.close()
