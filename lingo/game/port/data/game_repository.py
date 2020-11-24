@@ -195,3 +195,47 @@ def update_end_round(round_id):
 
     except psycopg2.OperationalError as e:
         abort(500, e)
+
+
+def update_game_score(game_id):
+    try:
+        if validate_game_game_id(game_id):
+            curs = conn.cursor()
+            curs.execute("UPDATE public.games "
+                         "SET score = score + 1 "
+                         "WHERE id = %s "
+                         "AND active=TRUE",
+                         [game_id])
+            conn.commit()  # <- MUST commit to reflect the inserted data
+            curs.close()  # <- Always close an cursor
+
+    except psycopg2.OperationalError as e:
+        abort(500, e)
+
+
+def get_turn_count(round_id):
+    try:
+        if test_round(round_id):
+            curs = conn.cursor()
+            curs.execute("SELECT COUNT(*) FROM turns WHERE round_id = %s;", [round_id])
+            response = curs.fetchone()[0]
+            curs.close()
+            return response
+    except psycopg2.OperationalError as e:
+        abort(500, e)
+
+
+def update_end_game(game_id):
+    try:
+        if validate_game_game_id(game_id):
+            curs = conn.cursor()
+            curs.execute("UPDATE public.games "
+                         "SET active = FALSE "
+                         "WHERE id = %s "
+                         "AND active=TRUE",
+                         [game_id])
+            conn.commit()  # <- MUST commit to reflect the inserted data
+            curs.close()  # <- Always close an cursor
+
+    except psycopg2.OperationalError as e:
+        abort(500, e)

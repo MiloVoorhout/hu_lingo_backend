@@ -49,6 +49,8 @@ def validate_time(round_id, now):
     # Get start time of latest turn
     start_time = get_start_time_turn(round_id)
 
+    print(start_time)
+
     # Calculate the difference between date/times
     difference = current_time - start_time
 

@@ -7,7 +7,7 @@ from lingo.game.domain.round_type import RoundType
 from lingo.game.domain.round_data import GameRound
 from lingo.game.application.validation import *
 from lingo.game.port.data.game_repository import insert_game, insert_round, insert_turn, get_game_information, \
-    update_turn, update_game_word_length, update_end_round
+    update_turn, update_game_word_length, update_end_round, update_game_score, get_turn_count, update_end_game
 
 
 def create_game(user_id):
@@ -48,6 +48,9 @@ def guess_turn(user_id, guessed_word):
     # List that eventually will be returned
     word_response = []
 
+    # List
+    word_guess = ''
+
     # TODO: Check if word is NULL
     if guessed_word is not None:
         correct_word = game_details.get('correct_word')
@@ -74,13 +77,28 @@ def guess_turn(user_id, guessed_word):
 
             # TODO: Do something when word correct
             if correct_word.__eq__(guess):
+                # Update turn
                 update_turn(guess, round_id)
+
+                # Change game length
                 game_length = change_game_status(word_length, game_id)
+
+                # End the round
                 update_end_round(round_id)
+
+                # Create new random word
                 new_random_word = choose_random_word(game_length)
+
+                # Start a new round
                 round_id = insert_round(game_id, new_random_word)
+
+                # Update game score with +1
+                update_game_score(game_id)
+
+                word_guess = 'correct'
             else:
                 update_turn(guess, round_id)
+                word_guess = 'next-round'
 
             # TODO: check if total word is correct if so add a point
 
@@ -88,15 +106,22 @@ def guess_turn(user_id, guessed_word):
             for iteration, char in enumerate(guessed_word):
                 word_response.append(char + " invalid")
             update_turn(guessed_word.upper, round_id)
+            word_guess = 'next-round'
     else:
         users_input = 'NONE'
         update_turn(users_input, round_id)
+        word_guess = 'next-round'
 
     # TODO: do something when 5 guesses where committed
-
-    insert_turn(round_id)
-
-    return word_response
+    turn_count = get_turn_count(round_id)
+    if turn_count >= 5:
+        word_guess = 'game-over'
+        update_end_round(round_id)
+        update_end_game(game_id)
+        return word_response, word_guess
+    else:
+        insert_turn(round_id)
+        return word_response, word_guess
 
 
 def change_game_status(current_length, game_id):
