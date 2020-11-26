@@ -1,8 +1,5 @@
-import time
 from datetime import datetime
-from flask import abort
-
-from lingo.game.port.data.game_repository import get_start_time_turn
+from lingo.game.port.data.turn_repository import get_start_time_turn
 
 failed = False
 fail_message = ''
@@ -49,7 +46,8 @@ def validate_time(round_id, now):
     # Get start time of latest turn
     start_time = get_start_time_turn(round_id)
 
-    print(start_time)
+    print("Start time: " + str(start_time))
+    print("Current time: " + str(current_time))
 
     # Calculate the difference between date/times
     difference = current_time - start_time

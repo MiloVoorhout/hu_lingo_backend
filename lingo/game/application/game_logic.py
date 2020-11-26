@@ -1,13 +1,14 @@
 import random
 
 from flask import make_response, jsonify
-from datetime import datetime
-from lingo.game.domain.game import Game
 from lingo.game.domain.round_type import RoundType
-from lingo.game.domain.round_data import GameRound
 from lingo.game.application.validation import *
-from lingo.game.port.data.game_repository import insert_game, insert_round, insert_turn, get_game_information, \
-    update_turn, update_game_word_length, update_end_round, update_game_score, get_turn_count, update_end_game
+from lingo.game.port.data.game_repository import insert_game, get_game_information, update_game_word_length, update_game_score, update_end_game
+
+
+# TODO: Return first letter of word
+from lingo.game.port.data.round_repository import insert_round, update_end_round
+from lingo.game.port.data.turn_repository import insert_turn, update_turn, get_turn_count
 
 
 def create_game(user_id):
@@ -19,9 +20,12 @@ def create_game(user_id):
 
     game_id = insert_game(user_id, 'NL', game_type)
     if game_id is not None:
-        rounds_id = insert_round(game_id, random_word)
-        if rounds_id is not None:
-            insert_turn(rounds_id)
+        round_id = insert_round(game_id, random_word)
+        print(str(round_id))
+        print(random_word[0])
+        if round_id is not None:
+            insert_turn(round_id)
+            return random_word[0]
 
 
 def choose_random_word(word_length):
@@ -47,9 +51,6 @@ def guess_turn(user_id, guessed_word):
 
     # List that eventually will be returned
     word_response = []
-
-    # List
-    word_guess = ''
 
     # TODO: Check if word is NULL
     if guessed_word is not None:
