@@ -2,7 +2,7 @@ import pytest
 import connexion
 
 flask_app = connexion.FlaskApp(__name__)
-flask_app.add_api('lingo/swagger/swagger_test.yaml')
+flask_app.add_api('test/swagger/swagger_test.yaml')
 
 
 @pytest.fixture(scope='module')
