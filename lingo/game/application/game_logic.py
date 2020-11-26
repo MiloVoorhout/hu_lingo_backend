@@ -100,7 +100,8 @@ def guess_turn(user_id, guessed_word):
             # TODO: check if total word is correct if so add a point
 
         else:
-            print(validation_status[1])
+
+            # TODO: create good error handling for validation errors
             for iteration, char in enumerate(guessed_word):
                 word_response.append(char + " invalid")
             update_turn(guessed_word.upper(), round_id)

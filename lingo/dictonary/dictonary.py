@@ -4,9 +4,9 @@ def create_library():
         myfile = open('../../assets/filtered_dictionaries/' + nl + '.txt', 'w+')
         for word in outfile:
             word = word.strip()
-
-            if 5 <= len(word) <= 7 and word.isalpha():
-                myfile.write(word.lower() + "\n")
+            if not word[0].isupper():
+                if 5 <= len(word) <= 7 and word.isalpha():
+                    myfile.write(word + "\n")
 
         myfile.close()
 
