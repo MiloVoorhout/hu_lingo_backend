@@ -3,8 +3,8 @@ import random
 from flask import make_response, jsonify
 from lingo.game.domain.round_type import RoundType
 from lingo.game.application.validation import *
-from lingo.game.port.data.game_repository import insert_game, get_game_information, update_game_word_length, update_game_score, update_end_game
-
+from lingo.game.port.data.game_repository import insert_game, get_game_round_information, update_game_word_length, \
+    update_game_score, update_end_game, get_game_information
 
 # TODO: Return first letter of word
 from lingo.game.port.data.round_repository import insert_round, update_end_round
@@ -44,7 +44,7 @@ def guess_turn(user_id, guessed_word):
     now = datetime.now().strftime("%Y-%b-%d %H:%M:%S.%f")
 
     # Get game data from database
-    game_details = get_game_information(user_id)
+    game_details = get_game_round_information(user_id)
     word_length = game_details.get('word_length')
     round_id = game_details.get('round_id')
     game_id = game_details.get('game_id')
@@ -87,16 +87,12 @@ def guess_turn(user_id, guessed_word):
                 # End the round
                 update_end_round(round_id)
 
-                # Create new random word
-                new_random_word = choose_random_word(game_length)
-
-                # Start a new round
-                round_id = insert_round(game_id, new_random_word)
-
                 # Update game score with +1
                 update_game_score(game_id)
 
                 word_guess = 'correct'
+
+                return word_response, word_guess
             else:
                 update_turn(guess, round_id)
                 word_guess = 'next-round'
@@ -104,9 +100,10 @@ def guess_turn(user_id, guessed_word):
             # TODO: check if total word is correct if so add a point
 
         else:
+            print(validation_status[1])
             for iteration, char in enumerate(guessed_word):
                 word_response.append(char + " invalid")
-            update_turn(guessed_word.upper, round_id)
+            update_turn(guessed_word.upper(), round_id)
             word_guess = 'next-round'
     else:
         users_input = 'NONE'
@@ -133,11 +130,26 @@ def change_game_status(current_length, game_id):
     elif current_length == 6:
         new_length = RoundType.SevenCharacters.value
     elif current_length == 7:
-        new_length = RoundType.FiveCharacters
+        new_length = RoundType.FiveCharacters.value
 
     update_game_word_length(game_id, new_length)
 
     return new_length
+
+
+def create_round(user_id):
+    game_details = get_game_information(user_id)
+
+    word_length = game_details.get('word_length')
+    game_id = game_details.get('game_id')
+
+    random_word = choose_random_word(word_length)
+
+    round_id = insert_round(game_id, random_word)
+
+    if round_id is not None:
+        insert_turn(round_id)
+        return random_word[0]
 
 
 def all_games():

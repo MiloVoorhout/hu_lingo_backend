@@ -11,8 +11,8 @@ def insert_turn(round_id):
     try:
         if validate_round_round_id(round_id):
             curs = conn.cursor()
-            curs.execute("INSERT INTO turns (guessed_word, started_at, round_id) VALUES(%s, now()::timestamptz, %s)",
-                         ('', round_id))
+            curs.execute("INSERT INTO turns (guessed_word, started_at, round_id) VALUES(NULL, now()::timestamptz, %s)",
+                         [round_id])
             conn.commit()  # <- MUST commit to reflect the inserted data
             curs.close()   # <- Always close an cursor
 
@@ -30,7 +30,7 @@ def get_start_time_turn(round_id):
             curs.execute("SELECT t.started_at, t.id "
                          "FROM turns t "
                          "WHERE t.round_id = %s "
-                         "AND t.guessed_word = ''", [round_id])
+                         "AND t.guessed_word IS NULL", [round_id])
             response = curs.fetchone()
             curs.close()  # <- Always close an cursor
 
@@ -47,7 +47,7 @@ def update_turn(guessed_word, round_id):
             curs.execute("UPDATE public.turns "
                          "SET guessed_word=%s "
                          "WHERE round_id = %s "
-                         "AND guessed_word = ''",
+                         "AND guessed_word IS NULL",
                          (guessed_word, round_id))
             conn.commit()  # <- MUST commit to reflect the inserted data
             curs.close()  # <- Always close an cursor
