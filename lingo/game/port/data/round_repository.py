@@ -32,29 +32,12 @@ def validate_round(game_id):
     return response
 
 
-# TODO: Change name of function
 def validate_round_round_id(round_id):
     curs = conn.cursor()
     curs.execute("SELECT EXISTS(SELECT 1 AS result FROM rounds WHERE id = %s and active = TRUE)", [round_id])
     response = curs.fetchone()[0]
     curs.close()
     return response
-
-
-def update_round_finished(game_id):
-    try:
-        if not validate_round(game_id):
-            curs = conn.cursor()
-            curs.execute("UPDATE public.rounds "
-                         "SET active=FALSE "
-                         "WHERE game_id = %s "
-                         "AND active=TRUE",
-                         [game_id])
-            conn.commit()  # <- MUST commit to reflect the inserted data
-            curs.close()  # <- Always close an cursor
-
-    except psycopg2.OperationalError as e:
-        abort(500, e)
 
 
 def update_end_round(round_id):

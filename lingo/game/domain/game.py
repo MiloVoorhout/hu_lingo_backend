@@ -1,7 +1,25 @@
+"""
+    This scripted is made as an Game Domain in
+    here all game data is manipulated an analysed
+"""
+
 from lingo.game.application.validation_logic import run_all_turn_validations
 
 
-def run_turn(guessed_word, correct_word, word_length, turn_start_time, now, turn_count, game_language):
+# pylint: disable=too-many-arguments
+def run_turn(guessed_word, correct_word, word_length,
+             turn_start_time, now, turn_count, game_language):
+    """
+    Run everything to do with a guess turn
+    :param guessed_word: Users guessed word
+    :param correct_word: The correct word
+    :param word_length: The correct word length
+    :param turn_start_time: Start time of current turn
+    :param now: Time the http call started
+    :param turn_count: Count of all turns this round
+    :param game_language: The language of the game
+    :return: turn result, character response, (validation errors)
+    """
     # First check validations
     validation_response = run_all_turn_validations(guessed_word, word_length,
                                                    turn_start_time, now, game_language)
@@ -20,17 +38,24 @@ def run_turn(guessed_word, correct_word, word_length, turn_start_time, now, turn
     if turn_count >= 5:
         if validation[0]:
             return 'game-over', character_response, validation[1]
-        else:
-            return 'game-over', character_response
+
+        word_guess = 'game-over'
     else:
         if validation[0]:
             character_response = invalid_characters(guessed_word)
             return 'validation-error', character_response, validation[1]
-        else:
-            return word_guess, character_response
+
+    return word_guess, character_response
+# pylint: enable=too-many-arguments
 
 
 def check_characters(guessed_word, correct_word):
+    """
+    Check all characters of the word
+    :param guessed_word: Users guessed word
+    :param correct_word: Correct word of the round
+    :return: Character lis and if they are correct, present or absent
+    """
     word_response = []
 
     # Change word to CAPS
@@ -48,15 +73,25 @@ def check_characters(guessed_word, correct_word):
 
 
 def invalid_characters(guessed_word):
+    """
+    Say that every character is invalid
+    :param guessed_word: users guessed word
+    :return: List of character with every character invalid
+    """
     word_response = []
 
-    for iteration, char in enumerate(guessed_word):
+    for char in guessed_word:
         word_response.append(char + " invalid")
 
     return word_response
 
 
 def check_validation_response(validation_response):
+    """
+    Check validation responses
+    :param validation_response: response of the validation check
+    :return: validation error and the messages
+    """
     validation_error = False
     error_message = []
     for response in validation_response:

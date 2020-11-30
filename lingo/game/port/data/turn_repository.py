@@ -23,23 +23,6 @@ def insert_turn(round_id):
         abort(500, {'message': e})
 
 
-def get_start_time_turn(round_id):
-    try:
-        if validate_round_round_id(round_id):
-            curs = conn.cursor()
-            curs.execute("SELECT t.started_at, t.id "
-                         "FROM turns t "
-                         "WHERE t.round_id = %s "
-                         "AND t.guessed_word IS NULL", [round_id])
-            response = curs.fetchone()
-            curs.close()  # <- Always close an cursor
-
-            return response[0]
-
-    except psycopg2.OperationalError as e:
-        return None
-
-
 def update_turn(guessed_word, round_id):
     try:
         if validate_round_round_id(round_id):

@@ -1,10 +1,8 @@
 """
     This scripts runs all validations for the game_logic
 """
-
-from datetime import datetime
-
-from lingo.game.domain.validation import validate_time, validate_word_length, validate_only_alphabetic, validate_word
+from lingo.game.domain.validation import validate_time, validate_word_length, \
+    validate_only_alphabetic, validate_word
 
 
 def run_all_turn_validations(guess, correct_word_length, start_time, request_time, game_language):
@@ -18,8 +16,9 @@ def run_all_turn_validations(guess, correct_word_length, start_time, request_tim
     :return: Boolean = If there has been an error / Str = the error message
     """
 
-    # TODO: Make it run all validation and at errors to a list to return all errors
-    error_messages = [validate_word(guess, game_language), validate_only_alphabetic(guess),
-                      validate_word_length(guess, correct_word_length), validate_time(start_time, request_time)]
+    error_messages = [validate_word(guess, game_language),
+                      validate_only_alphabetic(guess),
+                      validate_word_length(guess, correct_word_length),
+                      validate_time(start_time, request_time)]
 
     return error_messages
