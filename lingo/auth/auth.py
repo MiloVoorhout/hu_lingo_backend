@@ -1,8 +1,13 @@
-from configparser import ConfigParser
+"""
+    This script handles everything for the authentication.
+    The authentication is made with a JWT token.
+"""
 
+# pylint: disable=import-error
+from configparser import ConfigParser
 import six
-import jwt
 import time
+import jwt
 from werkzeug.exceptions import Unauthorized
 
 # Get JWT secret information
@@ -12,6 +17,11 @@ jwt_info = config_object["JWT"]
 
 
 def generate_token(user_id):
+    """
+    Generates JWT token based on user_id and more
+    :param user_id: User unique identifier - Integer
+    :return: Encoded JWT token
+    """
     timestamp = _current_timestamp()
     payload = {
         "iss": jwt_info['JWT_ISSUER'],
@@ -24,13 +34,25 @@ def generate_token(user_id):
 
 
 def decode_token(token):
+    """
+    Decodes JWT token that is given to http request
+    :param token: JWT Token
+    :return: Decoded JWT Token
+    """
     try:
         return jwt.decode(token, jwt_info['JWT_SECRET'], algorithms=[jwt_info['JWT_ALGORITHM']])
-    except JWTError as e:
-        six.raise_from(Unauthorized, e)
+    except jwt.DecodeError as error:
+        six.raise_from(Unauthorized, error)
 
 
+# TODO: Delete function
 def get_secret(user, token_info) -> str:
+    """
+    Test function to see if JWT token works
+    :param user: user
+    :param token_info:
+    :return:
+    """
     return '''
     You are user_id {user} and the secret is 'wbevuec'.
     Decoded token claims: {token_info}.

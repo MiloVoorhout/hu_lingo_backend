@@ -43,19 +43,21 @@ def validate_game_game_id(game_id):
     return response
 
 
-# Get game and round information
+# Get game, round and turn information
 def get_game_round_information(user_id):
     try:
         if validate_game(user_id):
             curs = conn.cursor()
-            curs.execute("SELECT g.id, g.game_status, r.word, r.id "
+            curs.execute("SELECT g.id, g.language, g.game_status, r.word, r.id, t.started_at "
                          "FROM games g "
                          "JOIN rounds r ON r.game_id = g.id "
+                         "JOIN turns t ON t.round_id = r.id "
                          "WHERE g.user_id = %s AND g.active IS TRUE AND r.active IS TRUE", [user_id])
             row = curs.fetchone()
             curs.close()  # <- Always close an cursor
 
-            return {'game_id': row[0], 'word_length': row[1], 'correct_word': row[2], 'round_id': row[3]}
+            return {'game_id': row[0], 'game_language': row[1], 'word_length': row[2],
+                    'correct_word': row[3], 'round_id': row[4], 'turn_start_time': row[5]}
 
     except psycopg2.OperationalError as e:
         abort(500, {'message': e})

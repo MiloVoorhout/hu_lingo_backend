@@ -1,6 +1,10 @@
-import os
-import psycopg2
+"""
+    This script initializes a single instance of a database connection.
+"""
+
+# pylint: disable=import-error
 from configparser import ConfigParser
+import psycopg2
 
 config_object = ConfigParser()
 config_object.read("credentials/config.ini")
