@@ -2,8 +2,6 @@
     This scripted is made as an Game Domain in
     here all game data is manipulated an analysed
 """
-import json
-
 from lingo.game.application.validation_logic import run_all_turn_validations
 
 
