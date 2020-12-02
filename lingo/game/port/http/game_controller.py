@@ -9,13 +9,15 @@ from lingo.game.application.game_logic import create_game, guess_turn, create_ro
 
 
 # pylint: disable=inconsistent-return-statements
-def create_game_controller(user_id):
+def create_game_controller(user):
     """
     Creates a game based on user_id
-    :param user_id: user unique identifier
+    :param user: user unique identifier
     :return: first letter of word and word length
     """
-    user_id = int(user_id)
+
+    # Turn Bearer token info into a integer
+    user_id = int(user)
     if isinstance(user_id, int):
         first_letter = create_game(user_id)
 
@@ -29,12 +31,15 @@ def create_game_controller(user_id):
 
 
 # pylint: disable=inconsistent-return-statements
-def create_round_controller(user_id):
+def create_round_controller(user):
     """
     Creates a new round based on user_id
-    :param user_id: user unique identifier
+    :param user: user unique identifier
     :return: first letter and game length
     """
+
+    # Turn Bearer token info into a integer
+    user_id = int(user)
     if isinstance(user_id, int):
         first_letter = create_round(user_id)
 
@@ -49,13 +54,17 @@ def create_round_controller(user_id):
 
 # TODO add guessed_word back
 # pylint: disable=inconsistent-return-statements
-def guess_word(user_id, guessed_word):
+def guess_word(user, guessed_word):
     """
     Do a turn guess
-    :param user_id: user unique identifier
+    :param user: user unique identifier
     :param guessed_word: users guess
     :return: game status, word response, (validation error)
     """
+
+    # Turn Bearer token info into a integer
+    user_id = int(user)
+
     # pylint: disable=no-else-return
     if isinstance(user_id, int):
         response = guess_turn(user_id, guessed_word)

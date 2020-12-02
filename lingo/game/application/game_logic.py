@@ -128,7 +128,7 @@ def create_round(user_id):
     """
     Create a new round
     :param user_id: id of user to make a new round for the user
-    :return: first letter of new word and word lenth
+    :return: first letter of new word and word length
     """
     game_details = get_game_information(user_id)
 

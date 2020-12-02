@@ -8,29 +8,39 @@ from configparser import ConfigParser
 import six
 import time
 import jwt
+from flask import make_response
 from werkzeug.exceptions import Unauthorized
 
 # Get JWT secret information
+from lingo.auth.user_repository import get_user_id_login
+
 config_object = ConfigParser()
 config_object.read("credentials/config.ini")
 jwt_info = config_object["JWT"]
 
 
-def generate_token(user_id):
+def generate_token(username, password):
     """
     Generates JWT token based on user_id and more
-    :param user_id: User unique identifier - Integer
+    :param username: User unique name identifier - String
+    :param password: User password - String
     :return: Encoded JWT token
     """
-    timestamp = _current_timestamp()
-    payload = {
-        "iss": jwt_info['JWT_ISSUER'],
-        "iat": int(timestamp),
-        "exp": int(timestamp + int(jwt_info['JWT_LIFETIME_SECONDS'])),
-        "sub": str(user_id),
-    }
 
-    return jwt.encode(payload, jwt_info['JWT_SECRET'], algorithm=jwt_info['JWT_ALGORITHM'])
+    user_id = get_user_id_login(username, password)
+
+    if user_id is not None:
+        timestamp = _current_timestamp()
+        payload = {
+            "iss": jwt_info['JWT_ISSUER'],
+            "iat": int(timestamp),
+            "exp": int(timestamp + int(jwt_info['JWT_LIFETIME_SECONDS'])),
+            "sub": str(user_id),
+        }
+
+        return jwt.encode(payload, jwt_info['JWT_SECRET'], algorithm=jwt_info['JWT_ALGORITHM'])
+    else:
+        return make_response("User not found", 404)
 
 
 def decode_token(token):

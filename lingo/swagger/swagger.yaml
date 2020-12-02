@@ -39,9 +39,9 @@ paths:
           description: Return a word
         404:
           description: Can't choose a word
-  /game/create:
+  /game:
     post:
-      operationId: lingo.game.application.game_logic.create_game
+      operationId: lingo.game.port.http.game_controller.create_game_controller
       summary: Start a game
       responses:
         200:
@@ -51,37 +51,24 @@ paths:
               {}
       security:
         - jwt: [ 'secret' ]
-  /game/round/{user_id}:
+  /game/round:
     post:
-      operationId: lingo.game.application.game_logic.create_round
+      operationId: lingo.game.port.http.game_controller.create_round_controller
       summary: Start a round
-      parameters:
-        - name: user_id
-          description: User unique identifier
-          in: path
-          required: true
-          example: 4
-          schema:
-            type: integer
       responses:
         200:
           description: OK
           content:
             application/json:
               {}
+      security:
+        - jwt: [ 'secret' ]
   /game/turn:
     post:
       operationId: guess_word
       x-openapi-router-controller: lingo.game.port.http.game_controller
       summary: Make a guess of the correct word
       parameters:
-        - name: user_id
-          in: query
-          description: User unique identifier
-          required: true
-          example: 7
-          schema:
-            type: integer
         - name: guessed_word
           in: query
           description: Users guessed word
@@ -95,6 +82,8 @@ paths:
           content:
             application/json:
               {}
+      security:
+        - jwt: [ 'secret' ]
   /user/all:
     get:
       description: Return all users
@@ -105,18 +94,25 @@ paths:
           content:
             application/json:
               {}
-  /auth/{user_id}:
+  /auth:
     post:
       summary: Return JWT token
       operationId: lingo.auth.auth.generate_token
       parameters:
-        - name: user_id
-          description: User unique identifier
-          in: path
+        - name: username
+          description: User unique name identifier
+          in: query
           required: true
-          example: 12
+          example: Username
           schema:
-            type: integer
+            type: string
+        - name: password
+          description: Users password
+          in: query
+          required: true
+          example: Password
+          schema:
+            type: string
       responses:
         '200':
           description: JWT token

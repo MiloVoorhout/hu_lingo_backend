@@ -2,6 +2,7 @@
     This scripted is made as an Game Domain in
     here all game data is manipulated an analysed
 """
+import json
 
 from lingo.game.application.validation_logic import run_all_turn_validations
 
@@ -57,17 +58,33 @@ def check_characters(guessed_word, correct_word):
     :return: Character lis and if they are correct, present or absent
     """
     word_response = []
+    checked_characters = []
 
     # Change word to CAPS
     guess = guessed_word.upper()
     for iteration, char in enumerate(guess):
         if char in correct_word:
             if correct_word[iteration].__eq__(char):
-                word_response.append(char + " correct")
+                check_answer = "correct"
+                # word_response.append(char + " correct")
             else:
-                word_response.append(char + " present")
+                check_answer = "present"
+                # word_response.append(char + " present")
         else:
-            word_response.append(char + " absent")
+            check_answer = "absent"
+            # word_response.append(char + " absent")
+
+        # TODO: first letter can be present second letter correct fix this
+        if char in checked_characters and not check_answer.__eq__("correct"):
+            check_answer = "absent"
+
+        word_response.append(
+            {
+                "letter": char,
+                "letterFeedback": check_answer
+            }
+        )
+        checked_characters.append(char)
 
     return word_response
 
