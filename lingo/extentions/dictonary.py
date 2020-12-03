@@ -15,7 +15,7 @@ def create_library():
         for word in outfile:
             word = word.strip()
             if not word[0].isupper():
-                if 5 <= len(word) <= 7 and re.match('^[a-zA-Z_]+$', word):
+                if 5 <= len(word) <= 7 and re.match('^[a-z]+$', word):
                     my_file.write(word + "\n")
 
         my_file.close()
