@@ -14,8 +14,7 @@ def create_library():
         my_file = open('assets/filtered_dictionaries/' + dict_language + '.txt', 'w+')
         for word in outfile:
             word = word.strip()
-            if not word[0].isupper():
-                if 5 <= len(word) <= 7 and re.match('^[a-z]+$', word):
-                    my_file.write(word + "\n")
+            if re.match('^[a-z]{5,7}$', word):
+                my_file.write(word + "\n")
 
         my_file.close()
