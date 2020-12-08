@@ -117,9 +117,8 @@ paths:
         '200':
           description: JWT token
           content:
-            'text/plain':
-              schema:
-                type: string
+            application/json:
+              {}
   /secret:
     get:
       summary: Return secret string
@@ -131,6 +130,15 @@ paths:
             'text/plain':
               schema:
                 type: string
+      security:
+        - jwt: [ 'secret' ]
+  /token/validate:
+    get:
+      summary: Return secret string
+      operationId: lingo.auth.auth.check_token
+      responses:
+        '200':
+          description: secret response
       security:
         - jwt: [ 'secret' ]
 

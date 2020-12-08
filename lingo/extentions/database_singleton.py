@@ -17,7 +17,6 @@ class DatabaseConnection:
     :type connection: connection instance
     """
     connection = None
-    cursor = None
 
     @staticmethod
     def get_connection(_self):

@@ -1,7 +1,8 @@
 """
     Validation domain where all validation analyses is done
 """
-
+import os
+import re
 from datetime import datetime
 
 
@@ -12,8 +13,12 @@ def validate_word(guess, game_language):
     :param guess: String = users guessed word
     :return: Nothing
     """
+    # Get absolute file path
+    absolute_path = os.path.dirname(os.path.abspath(''))
+    file_path = absolute_path + '/assets/filtered_dictionaries/' + game_language + '.txt'
+
     # Check if word exists / Check if right grammar
-    with open('assets/filtered_dictionaries/' + game_language + '.txt', 'r') as dictionary:
+    with open(file_path, 'r') as dictionary:
         guess = guess.lower()
         if guess not in dictionary.read():
             return 'Given word does not exist'
@@ -27,7 +32,7 @@ def validate_only_alphabetic(guess):
     :return: Nothing
     """
     # Word only contains isalpha
-    if not guess.isalpha():
+    if not re.match('^[a-z]$', guess):
         return 'Word contains punctuation marks'
     return ''
 
@@ -60,6 +65,6 @@ def validate_time(start_time, now):
 
     # Check if guess in 10 seconds
     # TODO: change time difference to 10 seconds
-    if difference.seconds > 10000000:
+    if difference.seconds > 10:
         return 'Turn took longer than 10 seconds'
     return ''

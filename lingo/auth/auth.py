@@ -4,6 +4,7 @@
 """
 
 # pylint: disable=import-error
+import json
 from configparser import ConfigParser
 import six
 import time
@@ -38,7 +39,7 @@ def generate_token(username, password):
             "sub": str(user_id),
         }
 
-        return jwt.encode(payload, jwt_info['JWT_SECRET'], algorithm=jwt_info['JWT_ALGORITHM'])
+        return make_response(jwt.encode(payload, jwt_info['JWT_SECRET'], algorithm=jwt_info['JWT_ALGORITHM']), 200)
     else:
         return make_response("User not found", 404)
 
@@ -71,3 +72,10 @@ def get_secret(user, token_info) -> str:
 
 def _current_timestamp() -> int:
     return int(time.time())
+
+
+def check_token(token_info):
+    if not _current_timestamp() > token_info['exp']:
+        return make_response('', 200)
+    else:
+        return make_response('', 401)
