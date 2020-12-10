@@ -19,10 +19,10 @@ paths:
       summary: Api keepalive
       description: Api keepalive
       operationId: is_alive
-      x-openapi-router-controller: lingo.controllers.alive_controller
+      x-openapi-router-controller: openapi_server.port.http.default.alive_controller
       responses:
         "200":
           description: is alive
 
 servers:
-  - url: http://0.0.0.0:8080/v1/lingo/api
+  - url: http://0.0.0.0:8080/api
