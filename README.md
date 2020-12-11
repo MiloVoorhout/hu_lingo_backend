@@ -47,3 +47,17 @@ docker build -t openapi_server .
 # starting up a container
 docker run -p 8080:8080 openapi_server
 ```
+
+## Testing
+
+To test the application and see multiple analytics use the following functions:
+
+```
+pip install coverage
+
+# Run PyTest
+coverage run --omit 'venv/*' -m pytest openapi_server
+
+# Show coverage
+coverage report
+```
