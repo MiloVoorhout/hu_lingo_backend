@@ -1,3 +1,4 @@
+# pylint: skip-file
 from connexion.apps.flask_app import FlaskJSONEncoder
 import six
 

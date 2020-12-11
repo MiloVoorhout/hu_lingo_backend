@@ -5,14 +5,14 @@
 
 # pylint: disable=import-error
 from configparser import ConfigParser
-import six
 import time
+import six
 import jwt
 from flask import make_response
 from werkzeug.exceptions import Unauthorized
 
 # Get JWT secret information
-from openapi_server.port.data.auth.user_repository import get_user_id_login
+from openapi_server.core.port.data.auth.user_repository import get_user_id_login
 
 config_object = ConfigParser()
 config_object.read("../credentials/config.ini")
@@ -38,9 +38,10 @@ def generate_token(username, password):
             "sub": str(user_id),
         }
 
-        return make_response(jwt.encode(payload, jwt_info['JWT_SECRET'], algorithm=jwt_info['JWT_ALGORITHM']), 200)
-    else:
-        return make_response("User not found", 404)
+        return make_response(jwt.encode(payload, jwt_info['JWT_SECRET'],
+                                        algorithm=jwt_info['JWT_ALGORITHM']), 200)
+
+    return make_response("User not found", 404)
 
 
 def decode_token(token):
@@ -55,26 +56,17 @@ def decode_token(token):
         six.raise_from(Unauthorized, error)
 
 
-# TODO: Delete function
-def get_secret(user, token_info) -> str:
-    """
-    Test function to see if JWT token works
-    :param user: user
-    :param token_info:
-    :return:
-    """
-    return '''
-    You are user_id {user} and the secret is 'wbevuec'.
-    Decoded token claims: {token_info}.
-    '''.format(user=user, token_info=token_info)
-
-
 def _current_timestamp() -> int:
     return int(time.time())
 
 
 def check_token(token_info):
+    """
+    Check if token in expired
+    :param token_info: JWT Token information
+    :return: 200 or 401 status code
+    """
     if not _current_timestamp() > token_info['exp']:
         return make_response('', 200)
-    else:
-        return make_response('', 401)
+
+    return make_response('', 401)

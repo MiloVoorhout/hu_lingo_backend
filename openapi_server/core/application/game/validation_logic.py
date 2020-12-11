@@ -1,8 +1,8 @@
 """
     This scripts runs all validations for the game_logic
 """
-from openapi_server.domain.game.validation import validate_time, validate_word_length, \
-    validate_only_alphabetic, validate_word
+from openapi_server.core.domain.game.validation import validate_word, validate_only_alphabetic, \
+    validate_word_length, validate_time
 
 
 def run_all_turn_validations(guess, correct_word_length, start_time, request_time, game_language):

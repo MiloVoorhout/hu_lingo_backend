@@ -1,5 +1,6 @@
 import unittest
-from openapi_server.domain.game.game import *
+
+from openapi_server.core.domain.game.game import check_characters, invalid_characters, check_validation_response
 
 
 class TestGameLogic(unittest.TestCase):

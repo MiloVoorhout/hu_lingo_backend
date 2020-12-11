@@ -1,9 +1,8 @@
 """
     Validation domain where all validation analyses is done
 """
-import os
-import re
 from datetime import datetime
+from pathlib import Path
 
 
 def validate_word(guess, game_language):
@@ -14,7 +13,7 @@ def validate_word(guess, game_language):
     :return: Nothing
     """
     # Get absolute file path
-    absolute_path = os.path.dirname(os.path.abspath(''))
+    absolute_path = str(Path(__file__).parents[4])
     file_path = absolute_path + '/assets/filtered_dictionaries/' + game_language + '.txt'
 
     # Check if word exists / Check if right grammar
@@ -64,7 +63,6 @@ def validate_time(start_time, now):
     difference = current_time - start_time
 
     # Check if guess in 10 seconds
-    # TODO: change time difference to 10 seconds
-    if difference.seconds > 10000000:
+    if difference.seconds > 10:
         return 'Turn took longer than 10 seconds'
     return ''

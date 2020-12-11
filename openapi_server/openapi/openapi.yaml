@@ -40,7 +40,7 @@ paths:
             application/json: {}
           description: JWT token
       summary: Return JWT token
-      x-openapi-router-controller: openapi_server.port.http.auth.auth
+      x-openapi-router-controller: openapi_server.core.port.http.auth.auth
   /game:
     post:
       operationId: create_game_controller
@@ -53,7 +53,7 @@ paths:
       - jwt:
         - secret
       summary: Start a game
-      x-openapi-router-controller: openapi_server.port.http.game.game_controller
+      x-openapi-router-controller: openapi_server.core.port.http.game.game_controller
   /game/round:
     post:
       operationId: create_round_controller
@@ -66,7 +66,7 @@ paths:
       - jwt:
         - secret
       summary: Start a round
-      x-openapi-router-controller: openapi_server.port.http.game.game_controller
+      x-openapi-router-controller: openapi_server.core.port.http.game.game_controller
   /game/turn:
     post:
       operationId: guess_word
@@ -89,7 +89,7 @@ paths:
       - jwt:
         - secret
       summary: Make a guess of the correct word
-      x-openapi-router-controller: openapi_server.port.http.game.game_controller
+      x-openapi-router-controller: openapi_server.core.port.http.game.game_controller
   /ping:
     get:
       description: Api keepalive
@@ -100,7 +100,7 @@ paths:
       summary: Api keepalive
       tags:
       - alive
-      x-openapi-router-controller: openapi_server.port.http.default.alive_controller
+      x-openapi-router-controller: openapi_server.core.port.http.default.alive_controller
   /token/validate:
     get:
       operationId: check_token
@@ -111,7 +111,7 @@ paths:
       - jwt:
         - secret
       summary: Return secret string
-      x-openapi-router-controller: openapi_server.port.http.auth.auth
+      x-openapi-router-controller: openapi_server.core.port.http.auth.auth
 
 components:
   schemas: {}
@@ -120,4 +120,4 @@ components:
       bearerFormat: JWT
       scheme: bearer
       type: http
-      x-bearerInfoFunc: openapi_server.port.http.auth.auth.decode_token
+      x-bearerInfoFunc: openapi_server.core.port.http.auth.auth.decode_token

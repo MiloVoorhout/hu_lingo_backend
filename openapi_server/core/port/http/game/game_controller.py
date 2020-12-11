@@ -5,7 +5,17 @@
 # pylint: disable=import-error
 import json
 from flask import make_response, abort
-from openapi_server.application.game.game_logic import create_game, guess_turn, create_round
+from openapi_server.core.application.game.game_logic import GameService
+from openapi_server.core.port.data.game_repository import GameRepository
+from openapi_server.core.port.data.round_repository import RoundRepository
+from openapi_server.core.port.data.turn_repository import TurnRepository
+from openapi_server.core.port.file.word_repository import WordRepository
+
+game_repository = GameRepository()
+round_repository = RoundRepository()
+turn_repository = TurnRepository(round_repository)
+word_repository = WordRepository()
+game_service = GameService(game_repository, round_repository, turn_repository, word_repository)
 
 
 # pylint: disable=inconsistent-return-statements
@@ -19,7 +29,7 @@ def create_game_controller(user):
     # Turn Bearer token info into a integer
     user_id = int(user)
     if isinstance(user_id, int):
-        first_letter = create_game(user_id)
+        first_letter = game_service.create_game(user_id)
 
         response_json = {
             'first_letter': first_letter[0],
@@ -41,7 +51,7 @@ def create_round_controller(user):
     # Turn Bearer token info into a integer
     user_id = int(user)
     if isinstance(user_id, int):
-        first_letter = create_round(user_id)
+        first_letter = game_service.create_round(user_id)
 
         response_json = {
             'first_letter': first_letter[0],
@@ -52,7 +62,9 @@ def create_round_controller(user):
 # pylint: enable=inconsistent-return-statements
 
 
+# pylint: disable=fixme
 # TODO add guessed_word back
+# pylint: enable=fixme
 # pylint: disable=inconsistent-return-statements
 def guess_word(user, guessed_word):
     """
@@ -67,7 +79,7 @@ def guess_word(user, guessed_word):
 
     # pylint: disable=no-else-return
     if isinstance(user_id, int):
-        response = guess_turn(user_id, guessed_word)
+        response = game_service.guess_turn(user_id, guessed_word)
 
         if response[0].__eq__('abort'):
             abort(404, 'An error occured')

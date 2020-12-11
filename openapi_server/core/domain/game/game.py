@@ -3,7 +3,7 @@
     here all game data is manipulated an analysed
 """
 # pylint: disable=too-many-arguments
-from openapi_server.application.game.validation_logic import run_all_turn_validations
+from openapi_server.core.application.game.validation_logic import run_all_turn_validations
 
 
 def run_turn(guessed_word, correct_word, word_length,
@@ -44,7 +44,7 @@ def run_turn(guessed_word, correct_word, word_length,
             character_response = invalid_characters(guessed_word)
             return 'validation-error', character_response, validation[1]
 
-    return word_guess, character_response
+    return word_guess, character_response, ""
 # pylint: enable=too-many-arguments
 
 
@@ -56,8 +56,8 @@ def check_characters(guessed_word, correct_word):
     :return: Character lis and if they are correct, present or absent
     """
     word_response = []
-    checked_characters = []
-    checked_answers = []
+    # checked_characters = []
+    # checked_answers = []
 
     # Change word to CAPS
     guess = guessed_word.upper()
@@ -71,8 +71,9 @@ def check_characters(guessed_word, correct_word):
             check_answer = "absent"
 
         # checked_characters.append(char)
-        #
+        # pylint: disable=fixme
         # # # TODO: first letter can be present second letter correct fix this
+        # pylint: enable=fixme
         # # if char in checked_characters and not check_answer.__eq__("correct"):
         # #     check_answer = "absent"
 

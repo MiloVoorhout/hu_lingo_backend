@@ -1,6 +1,8 @@
 import unittest
-from datetime import timedelta
-from openapi_server.domain.game.validation import *
+from datetime import timedelta, datetime
+
+from openapi_server.core.domain.game.validation import validate_word, validate_only_alphabetic, validate_word_length, \
+    validate_time
 
 
 class TestValidation(unittest.TestCase):
@@ -11,7 +13,7 @@ class TestValidation(unittest.TestCase):
 
     def test_alphabetic_validation(self):
         """Test alphabetic validation"""
-        result = validate_only_alphabetic('éntre')
+        result = validate_only_alphabetic('entre0')
         self.assertEqual(result, 'Word contains punctuation marks')
 
     def test_length_validation(self):
