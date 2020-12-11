@@ -19,7 +19,7 @@ paths:
       summary: Api keepalive
       description: Api keepalive
       operationId: is_alive
-      x-openapi-router-controller: openapi_server.port.http.default.alive_controller
+      x-openapi-router-controller: openapi_server.core.port.http.default.alive_controller
       responses:
         "200":
           description: is alive
