@@ -55,34 +55,27 @@ def check_characters(guessed_word, correct_word):
     :param correct_word: Correct word of the round
     :return: Character lis and if they are correct, present or absent
     """
-    word_response = []
-    # checked_characters = []
-    # checked_answers = []
+    word_response = [{"letter": char, "letterFeedback": "absent"} for char in guessed_word.upper()]
+    guessed_characters = list(guessed_word.upper())
+    correct_characters = list(correct_word.upper())
 
-    # Change word to CAPS
-    guess = guessed_word.upper()
-    for iteration, char in enumerate(guess):
-        if char in correct_word:
-            if correct_word[iteration].__eq__(char):
-                check_answer = "correct"
-            else:
-                check_answer = "present"
-        else:
-            check_answer = "absent"
+    if guessed_word.__eq__(correct_word):
+        for char in word_response:
+            char["letterFeedback"] = "correct"
+    else:
+        for iteration, char in enumerate(guessed_characters):
+            if char == correct_characters[iteration]:
+                word_response[iteration]["letterFeedback"] = "correct"
+                guessed_characters[iteration] = "-"
+                correct_characters[iteration] = "-"
 
-        # checked_characters.append(char)
-        # pylint: disable=fixme
-        # # # TODO: first letter can be present second letter correct fix this
-        # pylint: enable=fixme
-        # # if char in checked_characters and not check_answer.__eq__("correct"):
-        # #     check_answer = "absent"
-
-        word_response.append(
-            {
-                "letter": char,
-                "letterFeedback": check_answer
-            }
-        )
+        for guess_iteration, guess_char in enumerate(guessed_characters):
+            if not guess_char.__eq__("-"):
+                for correct_iteration, correct_char in enumerate(correct_characters):
+                    if not correct_char.__eq__("-") and correct_char.__eq__(guess_char):
+                        word_response[guess_iteration]["letterFeedback"] = "present"
+                        guessed_characters[guess_iteration] = "-"
+                        correct_characters[correct_iteration] = "-"
 
     return word_response
 
