@@ -12,7 +12,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Python Code Quality and Lint
-      uses: ricardochaves/python-lint@v1.3.0
-     # with:
-       # python-root-list: "hu_lingo_backend lingo" 
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+      
+      - name: Python Code Quality and Lint
+        uses: ricardochaves/python-lint@v1.3.0
+        with:
+          python-root-list: "openapi_server" 
+          extra-pylint-options: "--ignore-patterns=test_.*?py"
