@@ -7,7 +7,7 @@ info:
   title: Connexion example
   version: 1.0.0
 servers:
-- url: /api
+- url: https://hu-lingo-trainer.herokuapp.com/api
 tags:
 - description: Keepalive
   name: alive
