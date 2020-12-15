@@ -3,15 +3,8 @@
 """
 
 # pylint: disable=import-error
-from configparser import ConfigParser
-from pathlib import Path
-
+import os
 import psycopg2
-
-config_object = ConfigParser()
-ABSOLUTE_PATH = str(Path(__file__).parents[2])
-config_object.read(ABSOLUTE_PATH + "/credentials/config.ini")
-database_info = config_object["DATABASE"]
 
 
 class DatabaseConnection:
@@ -29,11 +22,11 @@ class DatabaseConnection:
         """
         if _self.connection is None:
             _self.connection = psycopg2.connect(
-                host=database_info["DB_HOST"],
-                database=database_info["DB_NAME"],
-                user=database_info["DB_USER"],
-                password=database_info["DB_PASS"],
-                port=database_info["DB_PORT"]
+                host=os.environ.get("DB_HOST"),
+                database=os.environ.get("DB_NAME"),
+                user=os.environ.get("DB_USER"),
+                password=os.environ.get("DB_PASS"),
+                port=os.environ.get("DB_PORT")
             )
 
         return _self.connection

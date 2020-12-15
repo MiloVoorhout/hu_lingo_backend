@@ -4,10 +4,8 @@
 """
 
 # pylint: disable=import-error
-from configparser import ConfigParser
+import os
 import time
-from pathlib import Path
-
 import six
 import jwt
 from flask import make_response
@@ -15,11 +13,6 @@ from werkzeug.exceptions import Unauthorized
 
 # Get JWT secret information
 from openapi_server.core.port.data.auth.user_repository import get_user_id_login
-
-config_object = ConfigParser()
-ABSOLUTE_PATH = str(Path(__file__).parents[5])
-config_object.read(ABSOLUTE_PATH + "/credentials/config.ini")
-jwt_info = config_object["JWT"]
 
 
 def generate_token(username, password):
@@ -35,14 +28,14 @@ def generate_token(username, password):
     if user_id is not None:
         timestamp = _current_timestamp()
         payload = {
-            "iss": jwt_info['JWT_ISSUER'],
+            "iss": os.environ.get("JWT_ISSUER"),
             "iat": int(timestamp),
-            "exp": int(timestamp + int(jwt_info['JWT_LIFETIME_SECONDS'])),
+            "exp": int(timestamp + int(os.environ.get("JWT_LIFETIME_SECONDS"))),
             "sub": str(user_id),
         }
 
-        return make_response(jwt.encode(payload, jwt_info['JWT_SECRET'],
-                                        algorithm=jwt_info['JWT_ALGORITHM']), 200)
+        return make_response(jwt.encode(payload, os.environ.get("JWT_SECRET"),
+                                        algorithm=os.environ.get("JWT_ALGORITHM")), 200)
 
     return make_response("User not found", 404)
 
@@ -54,7 +47,7 @@ def decode_token(token):
     :return: Decoded JWT Token
     """
     try:
-        return jwt.decode(token, jwt_info['JWT_SECRET'], algorithms=[jwt_info['JWT_ALGORITHM']])
+        return jwt.decode(token, os.environ.get("JWT_SECRET"), algorithms=[os.environ.get("JWT_ALGORITHM")])
     except jwt.DecodeError as error:
         six.raise_from(Unauthorized, error)
 
