@@ -1,0 +1,33 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Python linter check
+
+on:
+  push:
+    branches: [ development ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+      
+      - name: Python Code Quality and Lint
+        uses: ricardochaves/python-lint@v1.3.0
+        with:
+          python-root-list: "openapi_server" 
+          use-pylint: true
+          use-pycodestyle: false
+          use-flake8: false
+          use-black: false 
+          use-mypy: false
+          use-isort: false
+          extra-pylint-options: "--ignore-patterns=test_.*?py"
+          extra-pycodestyle-options: ""
+          extra-flake8-options: ""
+          extra-black-options: ""
+          extra-mypy-options: ""
+          extra-isort-options: ""

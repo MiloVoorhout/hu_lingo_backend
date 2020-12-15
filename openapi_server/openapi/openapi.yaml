@@ -1,0 +1,133 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: milo.voorhout@student.hu.nl
+  description: Basic project with Flask , Connexion and OpenApi 3 created for testing
+    purposes only
+  title: Connexion example
+  version: 1.0.0
+servers:
+- url: http://0.0.0.0:8080/api
+tags:
+- description: Keepalive
+  name: alive
+paths:
+  /auth:
+    post:
+      operationId: generate_token
+      parameters:
+      - description: User unique name identifier
+        example: Username
+        explode: true
+        in: query
+        name: username
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: Users password
+        example: Password
+        explode: true
+        in: query
+        name: password
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: JWT token
+      summary: Return JWT token
+      x-openapi-router-controller: openapi_server.core.port.http.auth.auth
+  /game:
+    post:
+      operationId: create_game_controller
+      parameters:
+        - description: Game language
+          example: Language
+          explode: true
+          in: query
+          name: language
+          required: true
+          schema:
+            type: string
+          style: form
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: OK
+      security:
+      - jwt:
+        - secret
+      summary: Start a game
+      x-openapi-router-controller: openapi_server.core.port.http.game.game_controller
+  /game/round:
+    post:
+      operationId: create_round_controller
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: OK
+      security:
+      - jwt:
+        - secret
+      summary: Start a round
+      x-openapi-router-controller: openapi_server.core.port.http.game.game_controller
+  /game/turn:
+    post:
+      operationId: guess_word
+      parameters:
+      - description: Users guessed word
+        example: HELLO
+        explode: true
+        in: query
+        name: guessed_word
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: OK
+      security:
+      - jwt:
+        - secret
+      summary: Make a guess of the correct word
+      x-openapi-router-controller: openapi_server.core.port.http.game.game_controller
+  /ping:
+    get:
+      description: Api keepalive
+      operationId: is_alive
+      responses:
+        "200":
+          description: is alive
+      summary: Api keepalive
+      tags:
+      - alive
+      x-openapi-router-controller: openapi_server.core.port.http.default.alive_controller
+  /token/validate:
+    get:
+      operationId: check_token
+      responses:
+        "200":
+          description: secret response
+      security:
+      - jwt:
+        - secret
+      summary: Return secret string
+      x-openapi-router-controller: openapi_server.core.port.http.auth.auth
+
+components:
+  schemas: {}
+  securitySchemes:
+    jwt:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+      x-bearerInfoFunc: openapi_server.core.port.http.auth.auth.decode_token
