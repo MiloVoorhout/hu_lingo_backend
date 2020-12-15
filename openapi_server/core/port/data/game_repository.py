@@ -14,7 +14,7 @@ class GameRepository:
     """
 
     def __init__(self):
-        self.conn = DatabaseConnection.get_connection(DatabaseConnection)
+        self.conn = DatabaseConnection.get_connection(DatabaseConnection())
 
     # pylint: disable=inconsistent-return-statements
     def insert_game(self, user_id, language, game_status):

@@ -15,16 +15,17 @@ class WordRepository:
     """
 
     @staticmethod
-    def get_random_word(word_length):
+    def get_random_word(word_length, language):
         """
         Get a random word from a filtered dictionary
+        :param language: language of dictionary the word is from
         :param word_length: length of word that needs to be find
         :return: a random word with length x
         """
         random_word = ""
 
         absolute_path = str(Path(__file__).parents[4])
-        file_path = absolute_path + '/assets/filtered_dictionaries/NL.txt'
+        file_path = absolute_path + '/assets/filtered_dictionaries/' + language + '.txt'
 
         with open(file_path, 'r') as words:
             filter_words = words.read().splitlines()

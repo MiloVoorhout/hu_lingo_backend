@@ -4,11 +4,13 @@
 
 # pylint: disable=import-error
 from configparser import ConfigParser
+from pathlib import Path
+
 import psycopg2
 
 config_object = ConfigParser()
-config_object.read("../credentials/config.ini")
-
+absolute_path = str(Path(__file__).parents[2])
+config_object.read(absolute_path + "/credentials/config.ini")
 database_info = config_object["DATABASE"]
 
 

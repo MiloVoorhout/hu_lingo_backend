@@ -14,7 +14,7 @@ class RoundRepository:
     """
 
     def __init__(self):
-        self.conn = DatabaseConnection.get_connection(DatabaseConnection)
+        self.conn = DatabaseConnection.get_connection(DatabaseConnection())
 
     # pylint: disable=inconsistent-return-statements
     def insert_round(self, game_id, random_word):
@@ -57,7 +57,7 @@ class RoundRepository:
         curs.close()
         return response
 
-    def _validate_round_round_id(self, round_id):
+    def validate_round_round_id(self, round_id):
         """
         Validate if round exists with round_id
         :param round_id: round unique identifier
@@ -78,7 +78,7 @@ class RoundRepository:
         :return: Nothing
         """
         try:
-            if self._validate_round_round_id(round_id):
+            if self.validate_round_round_id(round_id):
                 curs = self.conn.cursor()
                 curs.execute("UPDATE public.rounds "
                              "SET active = FALSE "

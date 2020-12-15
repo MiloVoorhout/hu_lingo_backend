@@ -8,7 +8,7 @@ from flask import abort
 from openapi_server.extentions.database_singleton import DatabaseConnection
 
 # Singleton database connection
-conn = DatabaseConnection.get_connection(DatabaseConnection)
+conn = DatabaseConnection.get_connection(DatabaseConnection())
 
 
 # pylint: disable=inconsistent-return-statements

@@ -14,17 +14,11 @@ class TestAliveController(BaseTestCase):
 
     def test_is_alive(self):
         """Test case for is_alive
-
         Api keepalive
         """
-        headers = { 
-        }
-        response = self.client.open(
-            '/api/ping',
-            method='GET',
-            headers=headers)
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
+        headers = {}
+        response = self.client.open('/api/ping', method='GET', headers=headers)
+        self.assert200(response, 'Response body is : ' + response.data.decode('utf-8'))
 
 
 if __name__ == '__main__':

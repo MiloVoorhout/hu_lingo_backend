@@ -6,6 +6,8 @@
 # pylint: disable=import-error
 from configparser import ConfigParser
 import time
+from pathlib import Path
+
 import six
 import jwt
 from flask import make_response
@@ -15,7 +17,8 @@ from werkzeug.exceptions import Unauthorized
 from openapi_server.core.port.data.auth.user_repository import get_user_id_login
 
 config_object = ConfigParser()
-config_object.read("../credentials/config.ini")
+absolute_path = str(Path(__file__).parents[5])
+config_object.read(absolute_path + "/credentials/config.ini")
 jwt_info = config_object["JWT"]
 
 

@@ -19,9 +19,10 @@ game_service = GameService(game_repository, round_repository, turn_repository, w
 
 
 # pylint: disable=inconsistent-return-statements
-def create_game_controller(user):
+def create_game_controller(user, language):
     """
     Creates a game based on user_id
+    :param language: language the game is played in
     :param user: user unique identifier
     :return: first letter of word and word length
     """
@@ -29,7 +30,7 @@ def create_game_controller(user):
     # Turn Bearer token info into a integer
     user_id = int(user)
     if isinstance(user_id, int):
-        first_letter = game_service.create_game(user_id)
+        first_letter = game_service.create_game(user_id, language)
 
         response_json = {
             'first_letter': first_letter[0],

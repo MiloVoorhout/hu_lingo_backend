@@ -19,9 +19,10 @@ class GameService:
         self.turn_repository = turn_repository
         self.word_repository = word_repository
 
-    def create_game(self, user):
+    def create_game(self, user, language):
         """
         Creates a gamed based on user_id
+        :param language: language game is played in
         :param user: This user is the users id
         :return: returns the first letter and word length
         """
@@ -29,9 +30,9 @@ class GameService:
         game_type = RoundType.FiveCharacters.value
 
         # Create first round object
-        random_word = self._choose_random_word(game_type)
+        random_word = self._choose_random_word(game_type, language)
 
-        game_id = self.game_repository.insert_game(int(user), 'NL', game_type)
+        game_id = self.game_repository.insert_game(int(user), language, game_type)
         if game_id is not None:
             round_id = self.round_repository.insert_round(game_id, random_word)
 
@@ -40,16 +41,13 @@ class GameService:
 
         return random_word[0], game_type
 
-    # pylint: disable=fixme
-    # TODO: add language as parameter
-    # pylint: enable=fixme
-    def _choose_random_word(self, word_length):
+    def _choose_random_word(self, word_length, language):
         """
         Choose a random word based on word length
         :param word_length: length the word need to be
         :return: random word
         """
-        return self.word_repository.get_random_word(word_length)
+        return self.word_repository.get_random_word(word_length, language)
 
     def guess_turn(self, user_id, guessed_word):
         # pylint: disable=inconsistent-return-statements
@@ -78,7 +76,8 @@ class GameService:
                 # Update turn
                 self.turn_repository.turn_repository_update_turn(guessed_word, round_id)
                 # Change game length
-                self._change_game_status(game_details.get('word_length'), game_id)
+                new_length = self._change_game_status(game_details.get('word_length'))
+                self.game_repository.update_game_word_length(game_id, new_length)
                 # End the round
                 self.round_repository.update_end_round(round_id)
                 # Update game score with +1
@@ -97,6 +96,7 @@ class GameService:
                 self.turn_repository.insert_turn(round_id)
 
             elif turn_response[0].__eq__('game-over'):
+                self.turn_repository.insert_turn(round_id)
                 self.round_repository.update_end_round(round_id)
                 self.game_repository.update_end_game(game_id)
             else:
@@ -110,11 +110,10 @@ class GameService:
         return 'abort'
         # pylint: enable=inconsistent-return-statements
 
-    def _change_game_status(self, current_length, game_id):
+    def _change_game_status(self, current_length):
         """
         Change the game status based on the current word_length
         :param current_length: current game length
-        :param game_id: id of current game
         :return: new game length
         """
         new_length = None
@@ -126,7 +125,7 @@ class GameService:
         elif current_length == 7:
             new_length = RoundType.FiveCharacters.value
 
-        self.game_repository.update_game_word_length(game_id, new_length)
+        return new_length
 
     def create_round(self, user_id):
         """

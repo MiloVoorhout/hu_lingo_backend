@@ -14,7 +14,7 @@ class TurnRepository:
     """
 
     def __init__(self, round_repository):
-        self.conn = DatabaseConnection.get_connection(DatabaseConnection)
+        self.conn = DatabaseConnection.get_connection(DatabaseConnection())
         self.round_repository = round_repository
 
     # pylint: disable=inconsistent-return-statements

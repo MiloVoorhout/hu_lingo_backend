@@ -44,6 +44,16 @@ paths:
   /game:
     post:
       operationId: create_game_controller
+      parameters:
+        - description: Game language
+          example: Language
+          explode: true
+          in: query
+          name: language
+          required: true
+          schema:
+            type: string
+          style: form
       responses:
         "200":
           content:
