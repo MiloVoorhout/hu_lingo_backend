@@ -12,7 +12,7 @@ def main():
     app.add_api('openapi.yaml',
                 arguments={'title': 'Connexion api'},
                 pythonic_params=True)
-    app.run()
+    app.run(threaded=True, port=5000)
 
 
 if __name__ == '__main__':
