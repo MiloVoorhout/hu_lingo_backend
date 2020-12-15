@@ -47,7 +47,8 @@ def decode_token(token):
     :return: Decoded JWT Token
     """
     try:
-        return jwt.decode(token, os.environ.get("JWT_SECRET"), algorithms=[os.environ.get("JWT_ALGORITHM")])
+        return jwt.decode(token, os.environ.get("JWT_SECRET"),
+                          algorithms=[os.environ.get("JWT_ALGORITHM")])
     except jwt.DecodeError as error:
         six.raise_from(Unauthorized, error)
 
