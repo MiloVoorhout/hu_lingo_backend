@@ -139,3 +139,7 @@ credentials
 # OpenApi generator
 .openapi-generator
 openapi_generator/
+
+# Tests coverage
+.tests
+tests/
