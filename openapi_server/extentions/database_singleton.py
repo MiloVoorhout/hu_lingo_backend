@@ -9,8 +9,8 @@ from pathlib import Path
 import psycopg2
 
 config_object = ConfigParser()
-absolute_path = str(Path(__file__).parents[2])
-config_object.read(absolute_path + "/credentials/config.ini")
+ABSOLUTE_PATH = str(Path(__file__).parents[2])
+config_object.read(ABSOLUTE_PATH + "/credentials/config.ini")
 database_info = config_object["DATABASE"]
 
 

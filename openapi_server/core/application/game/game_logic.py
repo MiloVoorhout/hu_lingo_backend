@@ -110,6 +110,7 @@ class GameService:
         return 'abort'
         # pylint: enable=inconsistent-return-statements
 
+    # pylint: disable=no-self-use
     def _change_game_status(self, current_length):
         """
         Change the game status based on the current word_length
@@ -126,6 +127,7 @@ class GameService:
             new_length = RoundType.FiveCharacters.value
 
         return new_length
+    # enable: disable=no-self-use
 
     def create_round(self, user_id):
         """
@@ -138,7 +140,10 @@ class GameService:
         word_length = game_details.get('word_length')
         game_id = game_details.get('game_id')
 
-        random_word = self._choose_random_word(word_length)
+        # pylint: disable=fixme
+        # TODO: give round controller language param
+        # pylint: enable=fixme
+        random_word = self._choose_random_word(word_length, 'NL')
         round_id = self.round_repository.insert_round(game_id, random_word)
 
         if round_id is not None:
