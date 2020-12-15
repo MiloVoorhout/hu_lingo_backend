@@ -7,7 +7,7 @@ info:
   title: Connexion example
   version: 1.0.0
 servers:
-- url: http://0.0.0.0:8080/api
+- url: /api
 tags:
 - description: Keepalive
   name: alive
