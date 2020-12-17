@@ -13,8 +13,8 @@ class TurnRepository:
     TurnRepository class contains every turn function that talks to the database
     """
 
-    def __init__(self, round_repository):
-        self.conn = DatabaseConnection.get_connection(DatabaseConnection())
+    def __init__(self, round_repository, database):
+        self.conn = database
         self.round_repository = round_repository
 
     # pylint: disable=inconsistent-return-statements

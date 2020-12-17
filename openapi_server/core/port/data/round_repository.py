@@ -13,8 +13,8 @@ class RoundRepository:
     RoundRepository class contains every round function that talks to the database
     """
 
-    def __init__(self):
-        self.conn = DatabaseConnection.get_connection(DatabaseConnection())
+    def __init__(self, database):
+        self.conn = database
 
     # pylint: disable=inconsistent-return-statements
     def insert_round(self, game_id, random_word):
@@ -31,7 +31,7 @@ class RoundRepository:
                 curs.execute("INSERT INTO rounds (active, word, game_id) "
                              "VALUES(%s, %s, %s) RETURNING id",
                              (True, random_word, game_id))
-                round_id = curs.fetchone()
+                round_id = curs.fetchone()[0]
                 self.conn.commit()  # <- MUST commit to reflect the inserted data
                 curs.close()   # <- Always close an cursor
 

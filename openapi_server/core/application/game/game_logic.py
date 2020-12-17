@@ -57,7 +57,7 @@ class GameService:
         :param guessed_word: users guess
         :return: round type, word response, (validation error)
         """
-        now = datetime.now().strftime("%Y-%b-%d %H:%M:%S.%f")
+        now = datetime.now()
 
         if guessed_word is not None:
             game_details = self.game_repository.get_game_round_information(user_id)
@@ -69,12 +69,13 @@ class GameService:
             # pylint: disable=line-too-long
             turn_response = run_turn(guessed_word, game_details.get('correct_word'),
                                      game_details.get('word_length'), game_details.get('turn_start_time'),
-                                     now, self.turn_repository.get_turn_count(round_id), (game_details.get('game_language')).upper())
+                                     now, self.turn_repository.get_turn_count(round_id),
+                                     (game_details.get('game_language')).upper())
             # pylint: enable=line-too-long
 
             if turn_response[0].__eq__('correct'):
                 # Update turn
-                self.turn_repository.turn_repository_update_turn(guessed_word, round_id)
+                self.turn_repository.update_turn(guessed_word, round_id)
                 # Change game length
                 new_length = self._change_game_status(game_details.get('word_length'))
                 self.game_repository.update_game_word_length(game_id, new_length)
@@ -127,6 +128,7 @@ class GameService:
             new_length = RoundType.FiveCharacters.value
 
         return new_length
+
     # enable: disable=no-self-use
 
     def create_round(self, user_id):
@@ -140,13 +142,11 @@ class GameService:
         word_length = game_details.get('word_length')
         game_id = game_details.get('game_id')
 
-        # pylint: disable=fixme
-        # TODO: give round controller language param
-        # pylint: enable=fixme
-        random_word = self._choose_random_word(word_length, 'NL')
+        random_word = self._choose_random_word(word_length, game_details.get('language'))
         round_id = self.round_repository.insert_round(game_id, random_word)
 
         if round_id is not None:
-            self.round_repository.insert_turn(round_id)
+            self.turn_repository.insert_turn(round_id)
+            return random_word[0], word_length  # pylint: disable=inconsistent-return-statements
 
-        return random_word[0], word_length  # pylint: disable=inconsistent-return-statements
+        return 'abort'

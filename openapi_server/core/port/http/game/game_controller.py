@@ -10,10 +10,12 @@ from openapi_server.core.port.data.game_repository import GameRepository
 from openapi_server.core.port.data.round_repository import RoundRepository
 from openapi_server.core.port.data.turn_repository import TurnRepository
 from openapi_server.core.port.file.word_repository import WordRepository
+from openapi_server.extentions.database_singleton import DatabaseConnection
 
-game_repository = GameRepository()
-round_repository = RoundRepository()
-turn_repository = TurnRepository(round_repository)
+database_connection = DatabaseConnection.get_connection(DatabaseConnection())
+game_repository = GameRepository(database_connection)
+round_repository = RoundRepository(database_connection)
+turn_repository = TurnRepository(round_repository, database_connection)
 word_repository = WordRepository()
 game_service = GameService(game_repository, round_repository, turn_repository, word_repository)
 
@@ -63,9 +65,6 @@ def create_round_controller(user):
 # pylint: enable=inconsistent-return-statements
 
 
-# pylint: disable=fixme
-# TODO add guessed_word back
-# pylint: enable=fixme
 # pylint: disable=inconsistent-return-statements
 def guess_word(user, guessed_word):
     """

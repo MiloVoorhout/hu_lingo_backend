@@ -1,11 +1,13 @@
 import unittest
 from datetime import timedelta, datetime
-
 from openapi_server.core.domain.game.validation import validate_word, validate_only_alphabetic, validate_word_length, \
     validate_time
 
 
 class TestValidation(unittest.TestCase):
+    # =============================
+    # Validate that the word exists
+    # =============================
     def test_word_validation_word_does_not_exist(self):
         """Test word validation"""
         result = validate_word('nietbetaandwoord', 'NL')
@@ -16,6 +18,9 @@ class TestValidation(unittest.TestCase):
         result = validate_word('baard', 'NL')
         self.assertEqual(result, '')
 
+    # =========================================================
+    # Validate that the word only contains alphabetic character
+    # =========================================================
     def test_alphabetic_validation_word_contains_non_alphabetic_characters(self):
         """Test alphabetic validation"""
         result = validate_only_alphabetic('entre0')
@@ -26,6 +31,9 @@ class TestValidation(unittest.TestCase):
         result = validate_only_alphabetic('check')
         self.assertEqual(result, '')
 
+    # =============================================
+    # Validate that the guess has te correct length
+    # =============================================
     def test_length_validation_not_correct_length(self):
         """Test word length validation"""
         result = validate_word_length('zeven', 7)
@@ -36,10 +44,13 @@ class TestValidation(unittest.TestCase):
         result = validate_word_length('woord', 5)
         self.assertEqual(result, '')
 
+    # =============================
+    # Validate the time of the turn
+    # =============================
     def test_time_validation_turn_took_to_long(self):
         """Test time validation"""
         start_time = datetime.now()
-        now = (datetime.now() + timedelta(seconds=11)).strftime("%Y-%b-%d %H:%M:%S.%f")
+        now = (datetime.now() + timedelta(seconds=11))
 
         result = validate_time(start_time, now)
         self.assertEqual(result, 'Turn took longer than 10 seconds')
@@ -47,7 +58,7 @@ class TestValidation(unittest.TestCase):
     def test_time_validation_turn_took_exactly_10_seconds(self):
         """Test time validation"""
         start_time = datetime.now()
-        now = (datetime.now() + timedelta(seconds=10)).strftime("%Y-%b-%d %H:%M:%S.%f")
+        now = (datetime.now() + timedelta(seconds=10))
 
         result = validate_time(start_time, now)
         self.assertEqual(result, '')
@@ -55,7 +66,7 @@ class TestValidation(unittest.TestCase):
     def test_time_validation_turn_took_under_10_seconds(self):
         """Test time validation"""
         start_time = datetime.now()
-        now = (datetime.now() + timedelta(seconds=10)).strftime("%Y-%b-%d %H:%M:%S.%f")
+        now = (datetime.now() + timedelta(seconds=10))
 
         result = validate_time(start_time, now)
         self.assertEqual(result, '')

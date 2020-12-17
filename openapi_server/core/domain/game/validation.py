@@ -56,11 +56,8 @@ def validate_time(start_time, now):
     :param now: Datetime = time of users guess
     :return: Nothing
     """
-    # Make date time from NOW variable
-    current_time = datetime.strptime(now, "%Y-%b-%d %H:%M:%S.%f")
-
     # Calculate the difference between date/times
-    difference = current_time - start_time
+    difference = now - start_time
 
     # Check if guess in 10 seconds
     if difference.seconds > 10:
