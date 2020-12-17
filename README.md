@@ -1,5 +1,5 @@
 # Lingo trainer created with connexion
-![Alt text](coverage.svg)
+![Alt text](openapi_server/test/coverage.svg)
 
 
 ## Overview
