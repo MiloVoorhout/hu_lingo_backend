@@ -12,7 +12,7 @@ class TestDefaultController(BaseTestCase):
     """DefaultController integration test stubs"""
 
     def setUp(self) -> None:
-        self.bearerToken = (generate_token('tester', 'testing')).data.decode('utf-8')
+        self.bearerToken = 'Bearer ' + (generate_token('tester', 'testing')).data.decode('utf-8')
         self.conn = DatabaseConnection.get_connection(DatabaseConnection())
 
     def tearDown(self) -> None:
@@ -24,7 +24,7 @@ class TestDefaultController(BaseTestCase):
         Return secret string
         """
         headers = { 
-            'Authorization': 'Bearer ' + self.bearerToken,
+            'Authorization': self.bearerToken,
         }
         response = self.client.open(
             '/api/token/validate',
@@ -66,7 +66,7 @@ class TestDefaultController(BaseTestCase):
         query_string = [('language', 'NL')]
         headers = {
             'Accept': 'application/json',
-            'Authorization': 'Bearer ' + self.bearerToken,
+            'Authorization': self.bearerToken,
         }
         response = self.client.open(
             '/api/game',
@@ -98,7 +98,7 @@ class TestDefaultController(BaseTestCase):
         query_string = [('guessed_word', 'DRAAD')]
         headers = {
             'Accept': 'application/json',
-            'Authorization': 'Bearer ' + self.bearerToken,
+            'Authorization': self.bearerToken,
         }
         response = self.client.open(
             '/api/game/turn',
@@ -121,7 +121,7 @@ class TestDefaultController(BaseTestCase):
 
         headers = {
             'Accept': 'application/json',
-            'Authorization': 'Bearer ' + self.bearerToken,
+            'Authorization': self.bearerToken,
         }
         response = self.client.open(
             '/api/game/round',
