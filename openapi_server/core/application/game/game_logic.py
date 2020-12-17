@@ -84,7 +84,8 @@ class GameService:
                 # Update game score with +1
                 self.game_repository.update_game_score(game_id)
 
-            elif turn_response[0].__eq__('next-round') or turn_response[0].__eq__('validation-error'):
+            elif turn_response[0].__eq__('next-round') or \
+                    turn_response[0].__eq__('validation-error'):
                 # Update turn
                 self.turn_repository.update_turn(guessed_word, round_id)
                 # Insert new turn
