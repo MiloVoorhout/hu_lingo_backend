@@ -73,7 +73,8 @@ class GameService:
                                      (game_details.get('game_language')).upper())
             # pylint: enable=line-too-long
 
-            if turn_response[0].__eq__('correct'):
+            guess_answer = turn_response[0]
+            if guess_answer.__eq__('correct'):
                 # Update turn
                 self.turn_repository.update_turn(guessed_word, round_id)
                 # Change game length
@@ -84,14 +85,13 @@ class GameService:
                 # Update game score with +1
                 self.game_repository.update_game_score(game_id)
 
-            elif turn_response[0].__eq__('next-round') or \
-                    turn_response[0].__eq__('validation-error'):
+            elif guess_answer.__eq__('next-round') or guess_answer.__eq__('validation-error'):
                 # Update turn
                 self.turn_repository.update_turn(guessed_word, round_id)
                 # Insert new turn
                 self.turn_repository.insert_turn(round_id)
 
-            elif turn_response[0].__eq__('game-over'):
+            elif guess_answer.__eq__('game-over'):
                 self.turn_repository.insert_turn(round_id)
                 self.round_repository.update_end_round(round_id)
                 self.game_repository.update_end_game(game_id)
