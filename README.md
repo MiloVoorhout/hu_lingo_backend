@@ -1,4 +1,6 @@
 # Lingo trainer created with connexion
+![Alt text](coverage.svg)
+
 
 ## Overview
 This lingo trainer is a school project created for the course 'backend programming'. 
