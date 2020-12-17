@@ -45,7 +45,7 @@ htmlcov/
 .coverage.*
 .cache
 nosetests.xml
-openapi_server/test/coverage_test.xml
+openapi_server/test/_coverage.xml
 *.cover
 *.py,cover
 .hypothesis/
