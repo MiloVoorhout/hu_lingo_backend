@@ -1,8 +1,10 @@
+# pylint: skip-file
 """
     This repository contains all functions for getting words
 """
 
 import random
+
 
 class TestWordRepository:
     """

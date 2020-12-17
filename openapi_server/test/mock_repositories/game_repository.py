@@ -1,8 +1,7 @@
+# pylint: skip-file
 """
     This repository contains all test functions for GameRepository
 """
-
-# pylint: disable=import-error
 from datetime import datetime, timedelta
 
 

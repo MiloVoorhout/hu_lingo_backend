@@ -1,11 +1,7 @@
+# pylint: skip-file
 """
     This repository contains all functions connecting to the database table Turns
 """
-
-# pylint: disable=import-error
-import psycopg2
-from flask import abort
-from openapi_server.extentions.database_singleton import DatabaseConnection
 
 
 class TestTurnRepository:
