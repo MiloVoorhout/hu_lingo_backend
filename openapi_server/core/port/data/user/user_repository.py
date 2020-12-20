@@ -32,10 +32,9 @@ class UserRepository:
             curs.close()  # <- Always close an cursor
 
             return True
-        except psycopg2.OperationalError as error:
+        except psycopg2.IntegrityError as error:
             self.conn.rollback()
             abort(500, {'message': error})
-
     # pylint: enable=inconsistent-return-statements
 
     # pylint: disable=inconsistent-return-statements

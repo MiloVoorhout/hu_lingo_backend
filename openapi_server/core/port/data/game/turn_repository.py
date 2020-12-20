@@ -36,7 +36,7 @@ class TurnRepository:
             else:
                 abort(404, {'message': 'No active round found'})
             # pylint: enable=no-else-return
-        except psycopg2.OperationalError as error:
+        except psycopg2.IntegrityError as error:
             self.conn.rollback()
             abort(500, {'message': error})
     # pylint: enable=inconsistent-return-statements
@@ -61,9 +61,9 @@ class TurnRepository:
 
             else:
                 abort(404, {'message': 'No active round found'})
-        except psycopg2.OperationalError as error:
+        except psycopg2.IntegrityError as error:
             self.conn.rollback()
-            abort(500, error)
+            abort(500, {'message': error})
 
     # pylint: disable=inconsistent-return-statements
     def get_turn_count(self, round_id):

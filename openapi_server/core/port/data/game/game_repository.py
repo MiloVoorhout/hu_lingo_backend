@@ -40,7 +40,7 @@ class GameRepository:
             else:
                 abort(409, {'message': 'There is still a game active'})
             # pylint: enable=no-else-return
-        except psycopg2.OperationalError as error:
+        except psycopg2.IntegrityError as error:
             self.conn.rollback()
             abort(500, {'message': error})
     # pylint: enable=inconsistent-return-statements
@@ -140,9 +140,9 @@ class GameRepository:
                 self.conn.commit()  # <- MUST commit to reflect the inserted data
                 curs.close()  # <- Always close an cursor
 
-        except psycopg2.OperationalError as error:
+        except psycopg2.IntegrityError as error:
             self.conn.rollback()
-            abort(500, error)
+            abort(500, {'message': error})
 
     def update_game_score(self, game_id):
         """
@@ -161,9 +161,9 @@ class GameRepository:
                 self.conn.commit()  # <- MUST commit to reflect the inserted data
                 curs.close()  # <- Always close an cursor
 
-        except psycopg2.OperationalError as error:
+        except psycopg2.IntegrityError as error:
             self.conn.rollback()
-            abort(500, error)
+            abort(500, {'message': error})
 
     def update_end_game(self, game_id):
         """
@@ -182,6 +182,6 @@ class GameRepository:
                 self.conn.commit()  # <- MUST commit to reflect the inserted data
                 curs.close()  # <- Always close an cursor
 
-        except psycopg2.OperationalError as error:
+        except psycopg2.IntegrityError as error:
             self.conn.rollback()
-            abort(500, error)
+            abort(500, {'message': error})
