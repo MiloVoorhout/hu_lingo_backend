@@ -10,9 +10,12 @@ import six
 import jwt
 from flask import make_response
 from werkzeug.exceptions import Unauthorized
+from openapi_server.core.application.user.user_logic import UserService
+from openapi_server.core.port.data.user.user_repository import UserRepository
+from openapi_server.extentions.database_singleton import DatabaseConnection
 
-# Get JWT secret information
-from openapi_server.core.port.data.auth.user_repository import get_user_id_login
+database_connection = DatabaseConnection.get_connection(DatabaseConnection())
+user_service = UserService(UserRepository(database_connection))
 
 
 def generate_token(username, password):
@@ -23,7 +26,7 @@ def generate_token(username, password):
     :return: Encoded JWT token
     """
 
-    user_id = get_user_id_login(username, password)
+    user_id = user_service.check_user_login(username, password)
 
     if user_id is not None:
         timestamp = _current_timestamp()

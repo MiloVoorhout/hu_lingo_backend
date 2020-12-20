@@ -1,11 +1,10 @@
 import unittest
 from contextlib import closing
-import datetime
 
 import psycopg2
 import testing.postgresql
 
-from openapi_server.core.port.data.round_repository import RoundRepository
+from openapi_server.core.port.data.game.round_repository import RoundRepository
 
 
 class TestRoundRepository(unittest.TestCase):

@@ -3,8 +3,8 @@ from contextlib import closing
 import psycopg2
 import testing.postgresql
 
-from openapi_server.core.port.data.round_repository import RoundRepository
-from openapi_server.core.port.data.turn_repository import TurnRepository
+from openapi_server.core.port.data.game.round_repository import RoundRepository
+from openapi_server.core.port.data.game.turn_repository import TurnRepository
 
 
 class TestTurnRepository(unittest.TestCase):

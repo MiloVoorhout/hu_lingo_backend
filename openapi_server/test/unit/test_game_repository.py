@@ -5,7 +5,7 @@ import datetime
 import psycopg2
 import testing.postgresql
 
-from openapi_server.core.port.data.game_repository import GameRepository
+from openapi_server.core.port.data.game.game_repository import GameRepository
 
 
 class TestGameRepository(unittest.TestCase):

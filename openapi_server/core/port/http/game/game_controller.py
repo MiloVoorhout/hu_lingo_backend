@@ -6,9 +6,9 @@
 import json
 from flask import make_response, abort
 from openapi_server.core.application.game.game_logic import GameService
-from openapi_server.core.port.data.game_repository import GameRepository
-from openapi_server.core.port.data.round_repository import RoundRepository
-from openapi_server.core.port.data.turn_repository import TurnRepository
+from openapi_server.core.port.data.game.game_repository import GameRepository
+from openapi_server.core.port.data.game.round_repository import RoundRepository
+from openapi_server.core.port.data.game.turn_repository import TurnRepository
 from openapi_server.core.port.file.word_repository import WordRepository
 from openapi_server.extentions.database_singleton import DatabaseConnection
 

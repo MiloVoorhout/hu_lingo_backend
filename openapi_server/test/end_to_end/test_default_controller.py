@@ -50,7 +50,6 @@ class TestDefaultController(BaseTestCase):
             query_string=query_string)
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
-        print(response)
 
     def test_lingo_game_port_http_game_controller_create_game_controller(self):
         """Test case for lingo_game_port_http_game_controller_create_game_controller
@@ -129,6 +128,46 @@ class TestDefaultController(BaseTestCase):
             headers=headers)
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
+
+    def test_lingo_user_port_http_user_controller_get_high_score(self):
+        """Test case for lingo_port_http_user_controller_get_high_score
+
+        Get users high scores
+        """
+        headers = {
+            'Accept': 'application/json',
+            'Authorization': self.bearerToken,
+        }
+        response = self.client.open(
+            '/api/highscore',
+            method='GET',
+            headers=headers)
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
+    def test_lingo_user_port_http_user_create_new_user(self):
+        """Test case for lingo_port_http_user_controller_create_new_user
+
+        Create a new user
+        """
+        query_string = [('username', 'apitesting'),
+                        ('password', 'testing')]
+        headers = {
+            'Accept': 'application/json',
+            'Authorization': self.bearerToken,
+        }
+        response = self.client.open(
+            '/api/user',
+            method='POST',
+            headers=headers,
+            query_string=query_string)
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
+        # Clear test data in the database and create fake data
+        with closing(self.conn.cursor()) as cursor:
+            cursor.execute("DELETE FROM public.users WHERE username = 'apitesting';")
+            self.conn.commit()
 
 
 if __name__ == '__main__':
