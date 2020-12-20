@@ -39,6 +39,7 @@ class RoundRepository:
                 abort(409, {'message': 'There is still a round active'})
             # pylint: enable=no-else-return
         except psycopg2.OperationalError as error:
+            self.conn.rollback()
             abort(500, {'message': error})
     # pylint: enable=inconsistent-return-statements
 
@@ -88,4 +89,5 @@ class RoundRepository:
                 curs.close()  # <- Always close an cursor
 
         except psycopg2.OperationalError as error:
+            self.conn.rollback()
             abort(500, error)

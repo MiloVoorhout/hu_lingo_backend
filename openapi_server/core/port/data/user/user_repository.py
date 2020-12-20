@@ -33,6 +33,7 @@ class UserRepository:
 
             return True
         except psycopg2.OperationalError as error:
+            self.conn.rollback()
             abort(500, {'message': error})
 
     # pylint: enable=inconsistent-return-statements
