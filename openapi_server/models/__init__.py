@@ -1,4 +1,6 @@
-# pylint: skip-file
+"""
+    Base model init
+"""
 # coding: utf-8
 
 # flake8: noqa

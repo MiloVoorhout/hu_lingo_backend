@@ -100,6 +100,48 @@ paths:
         - secret
       summary: Make a guess of the correct word
       x-openapi-router-controller: openapi_server.core.port.http.game.game_controller
+  /user:
+    post:
+      description: Create a new user
+      operationId: create_new_user
+      parameters:
+        - description: User unique identifier
+          example: tester
+          explode: true
+          in: query
+          name: username
+          required: true
+          schema:
+            type: string
+          style: form
+        - description: Users password
+          example: testing
+          explode: true
+          in: query
+          name: password
+          required: true
+          schema:
+            type: string
+          style: form
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: OK
+      x-openapi-router-controller: openapi_server.core.port.http.user.user_controller
+  /highscore:
+    get:
+      operationId: get_high_scores_user
+      responses:
+        "200":
+          content:
+            application/json: { }
+          description: OK
+      security:
+        - jwt:
+            - secret
+      summary: Get users highscores
+      x-openapi-router-controller: openapi_server.core.port.http.user.user_controller
   /ping:
     get:
       description: Api keepalive

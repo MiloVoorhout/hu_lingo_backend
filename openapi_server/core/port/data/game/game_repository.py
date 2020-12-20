@@ -5,7 +5,6 @@
 # pylint: disable=import-error
 import psycopg2
 from flask import abort
-from openapi_server.extentions.database_singleton import DatabaseConnection
 
 
 class GameRepository:
@@ -13,8 +12,8 @@ class GameRepository:
     GameRepository class contains every game function that talks to the database
     """
 
-    def __init__(self):
-        self.conn = DatabaseConnection.get_connection(DatabaseConnection())
+    def __init__(self, database):
+        self.conn = database
 
     # pylint: disable=inconsistent-return-statements
     def insert_game(self, user_id, language, game_status):
@@ -88,7 +87,8 @@ class GameRepository:
                              "JOIN rounds r ON r.game_id = g.id "
                              "JOIN turns t ON t.round_id = r.id "
                              "WHERE g.user_id = %s "
-                             "AND g.active IS TRUE AND r.active IS TRUE", [user_id])
+                             "AND g.active IS TRUE AND r.active IS TRUE "
+                             "AND r.active IS TRUE AND t.guessed_word IS NULL", [user_id])
                 row = curs.fetchone()
                 curs.close()  # <- Always close an cursor
 
@@ -109,13 +109,13 @@ class GameRepository:
         try:
             if self._validate_game(user_id):
                 curs = self.conn.cursor()
-                curs.execute("SELECT g.id, g.game_status "
+                curs.execute("SELECT g.id, g.game_status, g.language "
                              "FROM games g "
                              "WHERE g.user_id = %s AND g.active = TRUE", [user_id])
                 row = curs.fetchone()
                 curs.close()  # <- Always close an cursor
 
-                return {'game_id': row[0], 'word_length': row[1]}
+                return {'game_id': row[0], 'word_length': row[1], 'language': row[2]}
 
         except psycopg2.OperationalError as error:
             abort(500, {'message': error})
