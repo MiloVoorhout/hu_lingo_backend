@@ -8,6 +8,7 @@ click==7.1.2
 clickclick==20.10.2
 connexion==2.7.0
 coverage==5.3
+coverage-badge==1.0.1
 curlify==2.2.1
 distlib==0.3.1
 Encoder==1.1
@@ -43,6 +44,7 @@ mirakuru==2.3.0
 multidict==5.1.0
 openapi-spec-validator==0.2.9
 packaging==20.4
+passlib==1.7.4
 pet==0.3.2
 pg8000==1.16.6
 pluggy==0.13.1
