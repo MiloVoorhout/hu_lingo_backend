@@ -7,7 +7,9 @@ This lingo trainer is a school project created for the course 'backend programmi
 With the use of connexion I created an flask project that uses OpenAPI. [OpenAPI-Spec](https://openapis.org) 
 from a remote server, you can easily generate a server stub. This is an example of building a OpenAPI-enabled Flask server.
 
-This example uses the [Connexion](https://github.com/zalando/connexion) library on top of Flask.
+This project uses the [Connexion](https://github.com/zalando/connexion) library on top of Flask.
+
+The project runs on Heroku and is analysed by sonarcloud (my [Sonarcloud](https://sonarcloud.io/dashboard?id=MiloVoorhout_hu_lingo_backend))
 
 ## Requirements
 Python 3.5.2+
@@ -76,13 +78,39 @@ python openapi_server/extentions/dictionary.py <DICTIONARY FILE NAME> <LANGUAGE 
 python openapi_server/extentions/dictionary.py "woorden" "NL"
 ```
 
-## Testing
-To test code quality before committing:
+## Analyse
+To analyse code writing quality before committing:
 ```
-# Run pylint to check code
+# Run linter to check code
 pylint --ignore-patterns=test_.*?py openapi_server
-```
 
+pyflakes openapi_server
+
+mypy openapi_server --ignore-missing-imports
+
+
+# Strict scanner that includes mulitple linters
+prospector openapi_server 
+
+
+# Security analysis
+bandit -r openapi_server/core
+```
+If you want to Analyse the performance do the following:
+```
+# Create a profile file in your directory
+python -m cProfile -o profile -m pytest openapi_server
+
+# Open the python console and run the following
+p = pstats.Stats('profile')
+p.strip_dirs()
+p.sort_stats('cumtime')
+p.print_stats(50)
+```
+This will print the 50 lines that have the longest cumulative duration. <br>
+If you want more lines change the 50 to the requested amount.
+
+## Testing
 To test the application and see multiple analytics use the following functions:
 
 ```
@@ -94,9 +122,25 @@ coverage run --omit 'venv/*' -m pytest openapi_server
 # Show coverage
 coverage report
 ```
+Pytest runs every test written in `openapi_server/test`. <br>
+This directory contains `end to end`, `integrations` and `unit` testing.
 
 To launch the integration tests, use tox:
 ```
 sudo pip install tox
 tox
 ```
+
+To launch all unit tests, use the following function:
+```
+pytest openapi_server/test/unit/
+```
+
+## Extra Information
+| Criteria | Solution  |
+| --- | --- |
+|  Static analysis tools  |  `pylint`, `pyflakes`, `mypy`, `prospector`, `bandit` and also `sonarcloud`  |
+|  Logger  |  I use heroku's build in logger to see what happens when the application is running  |
+|  Security control |  I use `bandit` for my security control and also `sonarcloud`  |
+|  Performance analyses |  I use `cProfile` see [Analyse](#analyse) |
+|  Code coverage |  For my coverage badge I use `coverage-badge`, this generates a badge. |

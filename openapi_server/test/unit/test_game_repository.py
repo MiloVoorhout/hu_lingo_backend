@@ -70,8 +70,6 @@ class TestGameRepository(unittest.TestCase):
             cursor.execute("INSERT INTO turns VALUES (1, NULL, now()::timestamptz, 1)")
             response = self.game_repository.get_game_round_information(1)
 
-            print(response)
-
         self.assertEqual(response.__eq__({'game_id': 1, 'game_language': 'NL', 'word_length': 5, 'correct_word': 'PIZZA',
                                           'round_id': 1, 'turn_start_time': datetime.datetime.now().date()}), True)
 
@@ -100,7 +98,7 @@ class TestGameRepository(unittest.TestCase):
 
             # Create data
             cursor.execute("INSERT INTO games VALUES (1, 'NL', 5, True, 1, 0)")
-            response = self.game_repository.update_game_word_length(1, 6)
+            self.game_repository.update_game_word_length(1, 6)
 
         self.assertEqual(True, True)
 
@@ -115,7 +113,7 @@ class TestGameRepository(unittest.TestCase):
 
             # Create data
             cursor.execute("INSERT INTO games VALUES (1, 'NL', 5, True, 1, 0)")
-            response = self.game_repository.update_game_score(1)
+            self.game_repository.update_game_score(1)
 
         self.assertEqual(True, True)
 
@@ -130,7 +128,7 @@ class TestGameRepository(unittest.TestCase):
 
             # Create data
             cursor.execute("INSERT INTO games VALUES (1, 'NL', 5, True, 1, 0)")
-            response = self.game_repository.update_end_game(1)
+            self.game_repository.update_end_game(1)
 
         self.assertEqual(True, True)
 

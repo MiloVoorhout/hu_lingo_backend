@@ -1,9 +1,7 @@
 import unittest
 from contextlib import closing
-
 import psycopg2
 import testing.postgresql
-
 from openapi_server.core.port.data.game.round_repository import RoundRepository
 
 
@@ -56,7 +54,7 @@ class TestRoundRepository(unittest.TestCase):
         with closing(self.conn.cursor()) as cursor:
             cursor.execute("CREATE TABLE rounds(id serial, active boolean, word varchar(7), game_id int)")
             cursor.execute("INSERT INTO rounds VALUES (1, True, 'BOOMER', 1)")
-            response = self.round_repository.update_end_round(1)
+            self.round_repository.update_end_round(1)
 
         self.assertEqual(True, True)
 

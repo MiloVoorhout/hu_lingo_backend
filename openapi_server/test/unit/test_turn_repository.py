@@ -44,7 +44,7 @@ class TestTurnRepository(unittest.TestCase):
             # Insert data
             cursor.execute("INSERT INTO rounds VALUES (1, True, 'BOOMER', 1)")
             cursor.execute("INSERT INTO turns VALUES (1, NULL, now()::timestamptz, 1)")
-            response = self.turn_repository.update_turn('BOOMER', 1)
+            self.turn_repository.update_turn('BOOMER', 1)
 
         self.assertEqual(True, True)
 
