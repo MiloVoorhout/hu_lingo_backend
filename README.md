@@ -32,6 +32,15 @@ Your OpenAPI definition lives here:
 http://localhost:5000/api/openapi.json
 ```
 
+## Environment variables
+To run the application properly you need to se the following environment variables
+| ENV | Purpose | Example |
+| :--- | :---: | ---: |
+| DB_HOST | Database host | `127.0.0.1` |
+| DB_NAME | Name of the database | `lingo_trainer` |
+| DB_PASS | Password of the database | `password` |
+| DB_PORT | Port on witch the database is running | `5432` |
+
 ## Running with Docker
 
 To run the server on a Docker container, please execute the following from the root directory:
@@ -46,7 +55,7 @@ docker run -p 5000:5000 openapi_server
 
 ## Extra options
 Add new dictionaries, first put the new dictionary in ~/assets/unfiltered_dictionaries.
-After run the following function
+After run the following function:
 ```
 python openapi_server/extentions/dictionary.py <DICTIONARY FILE NAME> <LANGUAGE NAME>
 
@@ -55,6 +64,11 @@ python openapi_server/extentions/dictionary.py "woorden" "NL"
 ```
 
 ## Testing
+To test code quality before committing:
+```
+# Run pylint to check code
+pylint --ignore-patterns=test_.*?py openapi_server
+```
 
 To test the application and see multiple analytics use the following functions:
 
