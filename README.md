@@ -13,6 +13,7 @@ This example uses the [Connexion](https://github.com/zalando/connexion) library 
 Python 3.5.2+
 
 ## Usage
+For creating the environment variables and database go to: [Preparation](#preparation)
 To run the server, please execute the following from the root directory:
 
 ```
@@ -32,7 +33,20 @@ Your OpenAPI definition lives here:
 http://localhost:5000/api/openapi.json
 ```
 
-## Environment variables
+## Running with Docker
+
+To run the server on a Docker container, please execute the following from the root directory:
+
+```bash
+# building the image
+docker build -t openapi_server .
+
+# starting up a container
+docker run -p 5000:5000 openapi_server
+```
+
+## Preparation
+#### Environment variables
 To run the application properly you need to se the following environment variables
 | ENV | Purpose | Example |
 | :--- | :---: | ---: |
@@ -46,17 +60,11 @@ To run the application properly you need to se the following environment variabl
 | JWT_LIFETIME_SECONDS | The lifetime of the jwt toke (in seconds) | `60` == 1 minute |
 | JW_SECRET | The secret number of string for the jwt token | `4321` |
 
-## Running with Docker
-
-To run the server on a Docker container, please execute the following from the root directory:
-
-```bash
-# building the image
-docker build -t openapi_server .
-
-# starting up a container
-docker run -p 5000:5000 openapi_server
-```
+#### Database
+You need to have an PostgreSQL database to use for the application. <br>
+Go to `openapi_server/test/setup.sql` for the SQL file. Run this in your database query 
+and you have created the required database tables. Get the `DB_HOST`, `DB_NAME`, `DB_PASS`,
+`DB_PORT` and the `DB_USER` and set those as your environment variables.
 
 ## Extra options
 Add new dictionaries, first put the new dictionary in ~/assets/unfiltered_dictionaries.

@@ -152,7 +152,7 @@ ALTER SEQUENCE public.turns_id_seq OWNED BY public.turns.id;
 CREATE TABLE public.users (
     id integer NOT NULL,
     username character varying(40) NOT NULL,
-    password character varying(40) NOT NULL
+    password character varying(255) NOT NULL
 );
 
 
