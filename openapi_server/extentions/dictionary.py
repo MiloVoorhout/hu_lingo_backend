@@ -2,16 +2,16 @@
     This script is made to create new game libraries
 """
 import re
+import sys
 
 
-def create_library():
+def create_library(old_dictionary, new_dict_language):
     """
     Creates library in the filtered_dictionaries dict
     :return: nothing
     """
-    with open('assets/unfiltered_dictionaries/woorden.txt', 'r') as outfile:
-        dict_language = "NL"
-        my_file = open('assets/filtered_dictionaries/' + dict_language + '.txt', 'w+')
+    with open('assets/unfiltered_dictionaries/' + old_dictionary + '.txt', 'r') as outfile:
+        my_file = open('assets/filtered_dictionaries/' + new_dict_language + '.txt', 'w+')
         for word in outfile:
             word = word.strip()
             if verify_word(word):
@@ -27,3 +27,9 @@ def verify_word(word):
     :return: a boolean of the check
     """
     return re.match('^[a-z]{5,7}$', word)
+
+
+if __name__ == '__main__':
+    dict_name = str(sys.argv[1])
+    dict_language = str(sys.argv[2])
+    create_library(dict_name, dict_language)
