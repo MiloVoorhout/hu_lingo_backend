@@ -40,6 +40,11 @@ To run the application properly you need to se the following environment variabl
 | DB_NAME | Name of the database | `lingo_trainer` |
 | DB_PASS | Password of the database | `password` |
 | DB_PORT | Port on witch the database is running | `5432` |
+| DB_USER | User name your login in with  | `milo` |
+| JWT_ALGORITHM | Algorithm in which the jwt token is encoded  | `SHA256` |
+| JWT_ISSUER | Name of company/person who issues the jwt token | `hu.milo.project` |
+| JWT_LIFETIME_SECONDS | The lifetime of the jwt toke (in seconds) | `60` == 1 minute |
+| JW_SECRET | The secret number of string for the jwt token | `4321` |
 
 ## Running with Docker
 
