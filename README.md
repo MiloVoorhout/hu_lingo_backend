@@ -69,7 +69,7 @@ and you have created the required database tables. Get the `DB_HOST`, `DB_NAME`,
 `DB_PORT` and the `DB_USER` and set those as your environment variables.
 
 ## Extra options
-Add new dictionaries, first put the new dictionary in ~/assets/unfiltered_dictionaries.
+Add new dictionaries: first put the new dictionary in `~/assets/unfiltered_dictionaries`.
 After run the following function:
 ```
 python openapi_server/extentions/dictionary.py <DICTIONARY FILE NAME> <LANGUAGE NAME>
