@@ -23,19 +23,13 @@ python3 -m openapi_server
 and open your browser to here:
 
 ```
-http://localhost:8080/api/ui/
+http://localhost:5000/api/ui/
 ```
 
 Your OpenAPI definition lives here:
 
 ```
-http://localhost:8080/api/openapi.json
-```
-
-To launch the integration tests, use tox:
-```
-sudo pip install tox
-tox
+http://localhost:5000/api/openapi.json
 ```
 
 ## Running with Docker
@@ -47,7 +41,17 @@ To run the server on a Docker container, please execute the following from the r
 docker build -t openapi_server .
 
 # starting up a container
-docker run -p 8080:8080 openapi_server
+docker run -p 5000:5000 openapi_server
+```
+
+## Extra options
+Add new dictionaries, first put the new dictionary in ~/assets/unfiltered_dictionaries.
+After run the following function
+```
+python openapi_server/extentions/dictionary.py <DICTIONARY FILE NAME> <LANGUAGE NAME>
+
+# Example
+python openapi_server/extentions/dictionary.py "woorden" "NL"
 ```
 
 ## Testing
@@ -62,4 +66,10 @@ coverage run --omit 'venv/*' -m pytest openapi_server
 
 # Show coverage
 coverage report
+```
+
+To launch the integration tests, use tox:
+```
+sudo pip install tox
+tox
 ```

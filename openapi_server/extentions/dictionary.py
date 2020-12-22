@@ -11,7 +11,7 @@ def create_library(old_dictionary, new_dict_language):
     :return: nothing
     """
     with open('assets/unfiltered_dictionaries/' + old_dictionary + '.txt', 'r') as outfile:
-        my_file = open('assets/filtered_dictionaries/' + new_dict_language + '.txt', 'w+')
+        my_file = open('assets/filtered_dictionaries/' + new_dict_language.upper() + '.txt', 'w+')
         for word in outfile:
             word = word.strip()
             if verify_word(word):
@@ -30,6 +30,6 @@ def verify_word(word):
 
 
 if __name__ == '__main__':
-    dict_name = str(sys.argv[1])
-    dict_language = str(sys.argv[2])
-    create_library(dict_name, dict_language)
+    DICT_NAME = str(sys.argv[1])
+    DICT_LANGUAGE = str(sys.argv[2])
+    create_library(DICT_NAME, DICT_LANGUAGE)
