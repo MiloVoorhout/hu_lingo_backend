@@ -21,9 +21,15 @@ To run the server, please execute the following from the root directory:
 ```
 pip3 install -r requirements.txt
 python3 -m openapi_server
+
+# if that doesn't work go to openapi_server and run the __main__.py file
+```
+and open your browser here to see if the api works:
+```
+http://localhost:5000/api/ping
 ```
 
-and open your browser to here:
+and open your browser to here to see al the endpoints:
 
 ```
 http://localhost:5000/api/ui/
@@ -34,6 +40,9 @@ Your OpenAPI definition lives here:
 ```
 http://localhost:5000/api/openapi.json
 ```
+
+#### Endpoints
+if you want to see the endpoints manually go to: `openapi_server/openapi/openapi.yaml`
 
 ## Running with Docker
 
